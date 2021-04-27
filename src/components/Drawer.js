@@ -15,13 +15,15 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import PollIcon from "@material-ui/icons/Poll";
 import SettingsApplicationsIcon from "@material-ui/icons/SettingsApplications";
 
 import { Link } from "react-router-dom";
+import { PieChart } from "./Charts";
+import { TransactionMeta, RecentMeta } from "./Cards";
+import { Grid } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -101,99 +103,128 @@ export default function MiniDrawer() {
   };
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            MoneyManager
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+    <>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              MoneyManager
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          <Link to="register">
-            <ListItem button key={"Profile"}>
-              {/* <a href="google.com"> </a> */}
-              <ListItemIcon>
-                <AccountBoxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Profile"} />
-            </ListItem>
-          </Link>
-          <Link to="dashboard">
-            <ListItem button key={"DashBoard"}>
-              {/* <a href="google.com"> </a> */}
-              <ListItemIcon>
-                <DashboardIcon />
-              </ListItemIcon>
-              <ListItemText primary={"DashBoard"} />
-            </ListItem>
-          </Link>
-          <Link to="stats">
-            <ListItem button key={"Stats"}>
-              {/* <a href="google.com"> </a> */}
-              <ListItemIcon>
-                <PollIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Stats"} />
-            </ListItem>
-          </Link>
-          <Link to="setting">
-            <ListItem button key={"Setting"}>
-              {/* <a href="google.com"> </a> */}
-              <ListItemIcon>
-                <SettingsApplicationsIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Setting"} />
-            </ListItem>
-          </Link>
-        </List>
-        <Divider />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        hi
-        {/* ADD basic stats recent trnsactions here */}
-      </main>
-    </div>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+          style={{ color: "red" }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            <Link style={{ textDecoration: "none" }} to="register">
+              <ListItem button key={"Profile"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <AccountBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Profile"} />
+              </ListItem>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="dashboard">
+              <ListItem button key={"DashBoard"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary={"DashBoard"} />
+              </ListItem>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="stats">
+              <ListItem button key={"Stats"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <PollIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Stats"} />
+              </ListItem>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="setting">
+              <ListItem button key={"Setting"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <SettingsApplicationsIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Setting"} />
+              </ListItem>
+            </Link>
+          </List>
+          <Divider />
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <div className={classes.root}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={3}>
+                <TransactionMeta
+                  name="Net Income"
+                  total="50000₹"
+                ></TransactionMeta>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TransactionMeta
+                  name="Net Expense"
+                  total="500₹"
+                ></TransactionMeta>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TransactionMeta
+                  name="Net Transfer"
+                  total="5000₹"
+                ></TransactionMeta>
+              </Grid>
+            </Grid>
+          </div>
+          <br />
+          <div style={{ backgroundColor: "white" }}>
+            <PieChart></PieChart>
+          </div>
+          <br></br>
+          <RecentMeta></RecentMeta>
+        </main>
+      </div>
+    </>
   );
 }

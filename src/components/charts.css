@@ -1,0 +1,26 @@
+/* body {
+  background: #e2e1e0;
+  text-align: center;
+}
+.card {
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: auto;
+  margin: 1rem;
+  position: relative;
+  width: 50%;
+}
+.card-4 {
+  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.5), 0 100px 10px rgba(0, 0, 0, 0.22);
+} */
+.box {
+  width: 50%;
+  text-align: center;
+  margin: 20px auto;
+  margin-bottom: 30px;
+  padding: 50px 15px;
+  background-color: #ced7ef;
+  color: gray;
+  vertical-align: middle;
+}

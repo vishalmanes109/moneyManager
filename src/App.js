@@ -14,8 +14,10 @@ function App() {
           <Switch>
             <Route path="/register" exact component={Register}></Route>
             <Route path="/login" exact component={Login}></Route>
-            <Route path="/dashboard" exact component={MiniDrawer}></Route>
-            <Route path="/404" exact component={NotFound}></Route>
+            <Route path="/dashboard" component={MiniDrawer}></Route>
+            <Route path="/" exact component={MiniDrawer}></Route>
+
+            <Route component={NotFound}></Route>
           </Switch>
         </header>
       </div>
