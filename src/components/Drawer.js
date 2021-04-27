@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -24,6 +24,8 @@ import { Link } from "react-router-dom";
 import { PieChart } from "./Charts";
 import { TransactionMeta, RecentMeta } from "./Cards";
 import { Grid } from "@material-ui/core";
+import { getTotalTransactionForMonth } from "../utilities/ApiService";
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -90,6 +92,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer() {
+  let userId = 1;
+  let [netTransactiondata, setNetTransactiondata] = useState([]);
+
+  async function fetchData() {
+    let baseUrl = `http://localhost:3005/`;
+    let res;
+    try {
+      let url = baseUrl + "transaction/total/" + userId;
+      console.log(url);
+      const response = await axios.get(url);
+      console.log(response.data.result.totalExpense[0].sum);
+
+      res = response.data.result;
+      setNetTransactiondata(res);
+      console.log(res);
+      console.log(netTransactiondata);
+    } catch (error) {
+      console.error(error);
+    }
+    return res;
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -198,21 +226,18 @@ export default function MiniDrawer() {
           <div className={classes.root}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={3}>
-                <TransactionMeta
-                  name="Net Income"
-                  total="50000₹"
-                ></TransactionMeta>
+                <TransactionMeta name="Net Income" total="00"></TransactionMeta>
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TransactionMeta
                   name="Net Expense"
-                  total="500₹"
+                  total="00"
                 ></TransactionMeta>
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TransactionMeta
                   name="Net Transfer"
-                  total="5000₹"
+                  total="00"
                 ></TransactionMeta>
               </Grid>
             </Grid>

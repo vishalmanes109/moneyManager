@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 let TransactionMeta = ({ name, total }) => {
   const classes = useStyles();
 
+  console.log(total);
+  if (total === "null₹") total = 0 + "₹";
   return (
     <Card variant="outlined">
       <CardContent>
