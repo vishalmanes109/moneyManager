@@ -29,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 let TransactionMeta = ({ name, total }) => {
   const classes = useStyles();
-
   console.log(total);
-  if (total === "null₹") total = 0 + "₹";
+  if (total === null) total = 0;
   return (
     <Card variant="outlined">
       <CardContent>
@@ -43,7 +42,7 @@ let TransactionMeta = ({ name, total }) => {
           {name}
         </Typography>
         <Typography variant="h6" component="h2">
-          {total}
+          {total}₹
         </Typography>
       </CardContent>
     </Card>

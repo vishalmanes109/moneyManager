@@ -7,7 +7,6 @@ const getTotalTransactionForMonth = async (userId) => {
     let url = baseUrl + "transaction/total/" + userId;
     console.log(url);
     const response = await axios.get(url);
-    console.log(response.data.result.totalExpense[0].sum);
 
     netTransactionData = response.data.result;
   } catch (error) {

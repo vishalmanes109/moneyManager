@@ -94,27 +94,25 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer() {
   let userId = 1;
   let [netTransactiondata, setNetTransactiondata] = useState([]);
-
-  async function fetchData() {
-    let baseUrl = `http://localhost:3005/`;
-    let res;
-    try {
-      let url = baseUrl + "transaction/total/" + userId;
-      console.log(url);
-      const response = await axios.get(url);
-      console.log(response.data.result.totalExpense[0].sum);
-
-      res = response.data.result;
-      setNetTransactiondata(res);
-      console.log(res);
-      console.log(netTransactiondata);
-    } catch (error) {
-      console.error(error);
-    }
-    return res;
-  }
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        // Forget any past errors
+        setError(null);
+        let result = await getTotalTransactionForMonth(userId);
+        // console.log("result: ", result);
+        setNetTransactiondata(result);
+        // console.log("after set: ", netTransactiondata);
+      } catch (err) {
+        console.error(err);
+        setError(error);
+      }
+      setLoading(false);
+    }
     fetchData();
   }, []);
 
@@ -225,21 +223,14 @@ export default function MiniDrawer() {
           <div className={classes.toolbar} />
           <div className={classes.root}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={3}>
-                <TransactionMeta name="Net Income" total="00"></TransactionMeta>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TransactionMeta
-                  name="Net Expense"
-                  total="00"
-                ></TransactionMeta>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TransactionMeta
-                  name="Net Transfer"
-                  total="00"
-                ></TransactionMeta>
-              </Grid>
+              {netTransactiondata.map((transaction) => (
+                <Grid item xs={12} sm={3}>
+                  <TransactionMeta
+                    name={transaction.name}
+                    total={transaction.total}
+                  ></TransactionMeta>
+                </Grid>
+              ))}
             </Grid>
           </div>
           <br />
