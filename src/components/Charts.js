@@ -1,5 +1,4 @@
 import React from "react";
-import Cards from "./Cards";
 import { Pie } from "react-chartjs-2";
 import { makeStyles } from "@material-ui/core/styles";
 

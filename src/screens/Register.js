@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { userRegistration } from "../utilities/ApiService";
 
 function Copyright() {
   return (
@@ -47,6 +48,42 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmpassword: "",
+  });
+
+  const HandleInput = (e) => {
+    const { id, value } = e.target;
+    // ...prevState means it takes prev object and spreads it value .... eg. initial time prevSate object id {name: "",email:"",password:"" }
+    // so it got spread as name="", email="", password="" single variable and not an array
+
+    // [id]:value => this takes value from e.target.value and put it into e.target.id for every entity in prevState object
+    setRegisterData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    console.log("lol");
+    try {
+      let registrationResult = await userRegistration(registerData);
+      console.log("lol:", registrationResult);
+      setRegisterData({
+        name: "",
+        password: "",
+        confirmpassword: "",
+        email: "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const classes = useStyles();
 
   return (
@@ -59,31 +96,23 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={submit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="name"
+                name="Name"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="name"
                 label="First Name"
+                value={registerData.name}
                 autoFocus
+                onChange={HandleInput}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -92,7 +121,9 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
+                value={registerData.email}
                 autoComplete="email"
+                onChange={HandleInput}
               />
             </Grid>
             <Grid item xs={12}>
@@ -104,7 +135,23 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
+                value={registerData.password}
                 autoComplete="current-password"
+                onChange={HandleInput}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmpassword"
+                value={registerData.confirmpassword}
+                autoComplete="current-password"
+                onChange={HandleInput}
               />
             </Grid>
             <Grid item xs={12}>
@@ -115,6 +162,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
+            onClick={submit}
             type="submit"
             fullWidth
             variant="contained"
