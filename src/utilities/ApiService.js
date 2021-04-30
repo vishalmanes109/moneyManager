@@ -1,12 +1,14 @@
 import axios from "axios";
 
+// Tracker  Services
+
 const getTotalTransactionForMonth = async (userId) => {
   let netTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
 
   try {
     let url = baseUrl + "transaction/total/" + userId;
-    console.log(url);
+    // console.log(url);
     const response = await axios.get(url);
 
     netTransactionData = response.data.result;
@@ -16,6 +18,23 @@ const getTotalTransactionForMonth = async (userId) => {
   return netTransactionData;
 };
 
+const getRecentTransaction = async (userId) => {
+  let recentTransactionData = {};
+  let baseUrl = `http://localhost:3002/`;
+
+  try {
+    let url = baseUrl + "transaction/recent/" + userId;
+    // console.log(url);
+    const response = await axios.get(url);
+
+    recentTransactionData = response.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+  return recentTransactionData;
+};
+
+// User Services
 const userRegistration = async (userData) => {
   // console.log(userData);
   let baseUrl = `http://localhost:3001/`;
@@ -50,4 +69,9 @@ const isUserNameAvailable = async (userName) => {
   }
   return result;
 };
-export { getTotalTransactionForMonth, userRegistration, isUserNameAvailable };
+export {
+  getTotalTransactionForMonth,
+  userRegistration,
+  isUserNameAvailable,
+  getRecentTransaction,
+};

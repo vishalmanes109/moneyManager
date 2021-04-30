@@ -24,7 +24,10 @@ import { Link } from "react-router-dom";
 import { PieChart } from "./Charts";
 import { TransactionMeta, RecentMeta } from "./Cards";
 import { Grid } from "@material-ui/core";
-import { getTotalTransactionForMonth } from "../utilities/ApiService";
+import {
+  getRecentTransaction,
+  getTotalTransactionForMonth,
+} from "../utilities/ApiService";
 
 const drawerWidth = 240;
 
@@ -88,16 +91,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  fab: {
-    position: "absolute",
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
+  list: { maxWidth: "750px", margin: "0 auto" },
+  card: { margin: "0 auto" },
 }));
 
 export default function MiniDrawer() {
   let userId = 1;
   let [netTransactiondata, setNetTransactiondata] = useState([]);
+  let [recentTransactionData, setRecentTransactionData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -110,7 +111,9 @@ export default function MiniDrawer() {
         let result = await getTotalTransactionForMonth(userId);
         // console.log("result: ", result);
         setNetTransactiondata(result);
-        // console.log("after set: ", netTransactiondata);
+        let recentDataResult = await getRecentTransaction(userId);
+        setRecentTransactionData(recentDataResult);
+        console.log("after set: ", recentDataResult);
       } catch (err) {
         console.error(err);
         setError(error);
@@ -228,7 +231,7 @@ export default function MiniDrawer() {
           <div className={classes.root}>
             <Grid container spacing={3}>
               {netTransactiondata.map((transaction) => (
-                <Grid item xs={12} sm={3}>
+                <Grid className={classes.card} item xs={12} sm={3}>
                   <TransactionMeta
                     name={transaction.name}
                     total={transaction.total}
@@ -238,11 +241,20 @@ export default function MiniDrawer() {
             </Grid>
           </div>
           <br />
-          <div style={{ backgroundColor: "white" }}>
-            <PieChart></PieChart>
-          </div>
+
           <br></br>
-          <RecentMeta></RecentMeta>
+          <div className={classes.list}>
+            Recent Transaction
+            {recentTransactionData.map((transaction) => (
+              <RecentMeta
+                title={transaction.title}
+                amount={transaction.amount}
+                type={transaction.transaction_type_id}
+                description={transaction.description}
+                symbol={transaction.symbol}
+              ></RecentMeta>
+            ))}
+          </div>
         </main>
       </div>
     </>
