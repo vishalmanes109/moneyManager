@@ -25,7 +25,6 @@ import { PieChart } from "./Charts";
 import { TransactionMeta, RecentMeta } from "./Cards";
 import { Grid } from "@material-ui/core";
 import { getTotalTransactionForMonth } from "../utilities/ApiService";
-import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -88,6 +87,11 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+  },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }));
 

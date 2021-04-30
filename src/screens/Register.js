@@ -12,8 +12,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { userRegistration } from "../utilities/ApiService";
+import { userRegistration, isUserNameAvailable } from "../utilities/ApiService";
+import Alert from "@material-ui/lab/Alert";
+import { Redirect } from "react-router-dom";
 
+import {
+  isValidString,
+  isValidPassword,
+  isValidEmail,
+} from "../utilities/validator";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "black",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -48,12 +55,57 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmpassword: "",
+    confirmPassword: "",
   });
+
+  const [agree, setAgree] = useState({
+    checked: false,
+  });
+  const [isRegister, setIsRegister] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+
+  const isUsernameAvailable = async () => {
+    setErrorMessage("");
+    setError(false);
+    if (registerData.name.length < 1) {
+      setErrorMessage("Please Enter Valid Username");
+      setError(true);
+      return;
+    }
+    let result = await isUserNameAvailable(registerData.name);
+    if (result.success !== 1) {
+      setErrorMessage("Username Is Not Available!");
+      setError(true);
+    }
+  };
+  const validateEmail = () => {
+    console.log("lol", registerData.email);
+
+    if (!isValidEmail(registerData.email)) {
+      setError(true);
+      setErrorMessage("Please Enter Valid Email Id");
+      return;
+    }
+    setErrorMessage("");
+    setError(false);
+  };
+
+  const validatePassword = () => {
+    console.log("lol", registerData.password);
+    if (!isValidPassword(registerData.password)) {
+      setError(true);
+      setErrorMessage("Please Enter Valid Password");
+      return;
+    }
+    setErrorMessage("");
+    setError(false);
+  };
 
   const HandleInput = (e) => {
     const { id, value } = e.target;
@@ -69,18 +121,73 @@ export default function SignUp() {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log("lol");
+    if (agree.checked === false) {
+      setError(true);
+      setErrorMessage("Please Agree To Terms & Privacy Policy");
+
+      return;
+    }
+    let { name, email, password, confirmPassword } = registerData;
+    if (!isValidString(name)) {
+      setError(true);
+      setErrorMessage("Please Enter Valid Name");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError(true);
+      setErrorMessage("Please Enter Valid Email Id");
+      return;
+    }
+    if (!isValidString(password)) {
+      setError(true);
+      setErrorMessage("Please Enter Password");
+      return;
+    }
+    if (!isValidPassword(password)) {
+      setError(true);
+      setErrorMessage("Please Enter Valid Password");
+      return;
+    }
+    if (password !== confirmPassword) {
+      console.log(password);
+      console.log(confirmPassword);
+      setError(true);
+      setErrorMessage("Password & Confirm Password Does Not Match");
+      return;
+    }
+
     try {
+      setError(false);
+      setErrorMessage("");
       let registrationResult = await userRegistration(registerData);
-      console.log("lol:", registrationResult);
-      setRegisterData({
-        name: "",
-        password: "",
-        confirmpassword: "",
-        email: "",
-      });
+      if (registrationResult.status !== 200) {
+        setError(true);
+        setErrorMessage("Registration Falied");
+        return;
+      }
+      if (registrationResult.data.success === 1) {
+        console.log("lol:", registrationResult.data);
+        setRegisterData({
+          name: "",
+          password: "",
+          confirmPassword: "",
+          email: "",
+        });
+
+        setError(false);
+        setErrorMessage("");
+        setIsRegister(true);
+        setTimeout(() => {
+          setRedirect(true);
+        }, 3000);
+        return;
+      }
+      // setError(true);
+      // setErrorMessage("Registration Failed! Try Again");
     } catch (err) {
       console.log(err);
+      setError(true);
+      setErrorMessage("error");
     }
   };
 
@@ -89,97 +196,123 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={submit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                autoComplete="name"
-                name="Name"
-                variant="outlined"
-                required
-                fullWidth
-                id="name"
-                label="First Name"
-                value={registerData.name}
-                autoFocus
-                onChange={HandleInput}
-              />
-            </Grid>
+      {redirect === true ? (
+        <Redirect to="dashboard" />
+      ) : (
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          {error === true ? (
+            <Alert severity="error">{errorMessage}</Alert>
+          ) : (
+            <div></div>
+          )}
+          {isRegister === true ? (
+            <Alert severity="success">
+              "registration Done! Redirecting In 3 Sec....."
+            </Alert>
+          ) : (
+            <div></div>
+          )}
+          <form className={classes.form} onSubmit={submit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  autoComplete="name"
+                  name="Name"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="name"
+                  label="User Name"
+                  value={registerData.name}
+                  autoFocus
+                  onChange={HandleInput}
+                  onBlur={isUsernameAvailable}
+                />
+              </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                value={registerData.email}
-                autoComplete="email"
-                onChange={HandleInput}
-              />
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={registerData.email}
+                  autoComplete="email"
+                  onChange={HandleInput}
+                  onBlur={validateEmail}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  value={registerData.password}
+                  autoComplete="current-password"
+                  onChange={HandleInput}
+                  onBlur={validatePassword}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  value={registerData.confirmPassword}
+                  autoComplete="current-password"
+                  onChange={HandleInput}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id="isAgree"
+                      defaultChecked={agree.checked}
+                      onChange={(e) => setAgree({ checked: e.target.checked })}
+                      color="primary"
+                    />
+                  }
+                  label="I accept terms and privacy policy"
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                value={registerData.password}
-                autoComplete="current-password"
-                onChange={HandleInput}
-              />
+            <Button
+              onClick={submit}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="#" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmpassword"
-                value={registerData.confirmpassword}
-                autoComplete="current-password"
-                onChange={HandleInput}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I am agree to terms and privacy policy"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            onClick={submit}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
       <Box mt={5}>
         <Copyright />
       </Box>
