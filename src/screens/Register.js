@@ -179,6 +179,8 @@ export default function SignUp() {
         setIsRegister(true);
         setTimeout(() => {
           setRedirect(true);
+          localStorage.setItem("isLoggedIn", false);
+          localStorage.setItem("userName", registerData.name);
         }, 3000);
         return;
       }
@@ -213,7 +215,7 @@ export default function SignUp() {
           )}
           {isRegister === true ? (
             <Alert severity="success">
-              "registration Done! Redirecting In 3 Sec....."
+              registration Done! Redirecting In 3 Sec.....
             </Alert>
           ) : (
             <div></div>

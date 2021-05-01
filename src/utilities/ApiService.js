@@ -54,6 +54,24 @@ const userRegistration = async (userData) => {
   return registrationResult;
 };
 
+const userLogin = async (userData) => {
+  // console.log(userData);
+  let baseUrl = `http://localhost:3001/`;
+  // console.log(userData);
+  let loginResult = {};
+  try {
+    let url = baseUrl + "user/login";
+    const response = await axios.post(url, userData);
+    console.log("response:", response);
+    loginResult = response;
+
+    console.log("registrationResult:", loginResult.data.token);
+  } catch (error) {
+    console.error("error:", error);
+  }
+  return loginResult;
+};
+
 const isUserNameAvailable = async (userName) => {
   console.log(userName);
   let baseUrl = `http://localhost:3001/`;
@@ -74,4 +92,5 @@ export {
   userRegistration,
   isUserNameAvailable,
   getRecentTransaction,
+  userLogin,
 };

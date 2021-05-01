@@ -99,15 +99,6 @@ export default function MiniDrawer({ props }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        // setLoading(true);
-        // // Forget any past errors
-        // setError(null);
-        // let result = await getTotalTransactionForMonth(userId);
-        // // console.log("result: ", result);
-        // setNetTransactiondata(result);
-        // let recentDataResult = await getRecentTransaction(userId);
-        // setRecentTransactionData(recentDataResult);
-        // console.log("after set: ", recentDataResult);
       } catch (err) {
         // console.error(err);
         // setError(error);
