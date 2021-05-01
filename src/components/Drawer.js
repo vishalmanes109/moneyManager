@@ -21,9 +21,6 @@ import PollIcon from "@material-ui/icons/Poll";
 import SettingsApplicationsIcon from "@material-ui/icons/SettingsApplications";
 
 import { Link } from "react-router-dom";
-import { PieChart } from "./Charts";
-import { TransactionMeta, RecentMeta } from "./Cards";
-import { Grid } from "@material-ui/core";
 import {
   getRecentTransaction,
   getTotalTransactionForMonth,
@@ -95,30 +92,27 @@ const useStyles = makeStyles((theme) => ({
   card: { margin: "0 auto" },
 }));
 
-export default function MiniDrawer() {
-  let userId = 1;
-  let [netTransactiondata, setNetTransactiondata] = useState([]);
-  let [recentTransactionData, setRecentTransactionData] = useState([]);
+export default function MiniDrawer({ props }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        setLoading(true);
-        // Forget any past errors
-        setError(null);
-        let result = await getTotalTransactionForMonth(userId);
-        // console.log("result: ", result);
-        setNetTransactiondata(result);
-        let recentDataResult = await getRecentTransaction(userId);
-        setRecentTransactionData(recentDataResult);
-        console.log("after set: ", recentDataResult);
+        // setLoading(true);
+        // // Forget any past errors
+        // setError(null);
+        // let result = await getTotalTransactionForMonth(userId);
+        // // console.log("result: ", result);
+        // setNetTransactiondata(result);
+        // let recentDataResult = await getRecentTransaction(userId);
+        // setRecentTransactionData(recentDataResult);
+        // console.log("after set: ", recentDataResult);
       } catch (err) {
-        console.error(err);
-        setError(error);
+        // console.error(err);
+        // setError(error);
       }
-      setLoading(false);
+      // setLoading(false);
     }
     fetchData();
   }, []);
@@ -228,33 +222,7 @@ export default function MiniDrawer() {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div className={classes.root}>
-            <Grid container spacing={3}>
-              {netTransactiondata.map((transaction) => (
-                <Grid className={classes.card} item xs={12} sm={3}>
-                  <TransactionMeta
-                    name={transaction.name}
-                    total={transaction.total}
-                  ></TransactionMeta>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
-          <br />
-
-          <br></br>
-          <div className={classes.list}>
-            Recent Transaction
-            {recentTransactionData.map((transaction) => (
-              <RecentMeta
-                title={transaction.title}
-                amount={transaction.amount}
-                type={transaction.transaction_type_id}
-                description={transaction.description}
-                symbol={transaction.symbol}
-              ></RecentMeta>
-            ))}
-          </div>
+          {props}
         </main>
       </div>
     </>
