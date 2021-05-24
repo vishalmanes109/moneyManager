@@ -19,7 +19,7 @@ function App() {
             <Route path="/dashboard" component={Dashboard}></Route>
             <Route path="/drawer" component={MiniDrawer}></Route>
             <Route path="/stats" component={Stats}></Route>
-            <Route path="/" exact component={MiniDrawer}></Route>
+            <Route path="/" exact component={Dashboard}></Route>
 
             <Route component={NotFound}></Route>
           </Switch>

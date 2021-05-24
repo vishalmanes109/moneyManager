@@ -6,7 +6,7 @@ import { TransactionMeta, RecentMeta } from "../components/Cards";
 import { Grid } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
-import { PieChart } from "../components/Charts";
+import { PieChart, BarChart, LineChart } from "../components/Charts";
 
 import {
   getRecentTransaction,
@@ -55,12 +55,22 @@ const Dashboard = () => {
   }, []);
 
   let StatsContent = (
-    <>
+    <div style={{ maxWidth: "360px" }}>
       <div style={{ margin: "0 auto", width: "90%" }}>
-        This is stats
+        This is pie
         <PieChart></PieChart>
       </div>
-    </>
+
+      <div style={{ margin: "0 auto", width: "90%" }}>
+        This is bar
+        <BarChart></BarChart>
+      </div>
+
+      <div style={{ margin: "0 auto", width: "90%" }}>
+        This is Line
+        <LineChart></LineChart>
+      </div>
+    </div>
   );
 
   return <MiniDrawer props={StatsContent}></MiniDrawer>;

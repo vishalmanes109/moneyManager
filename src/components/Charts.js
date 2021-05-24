@@ -1,5 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 const data = {
   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
   datasets: [
@@ -40,6 +43,24 @@ const data = {
     },
   ],
 };
+const options = {
+  scales: {
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+    xAxes: [
+      {
+        stacked: true,
+      },
+    ],
+  },
+  // maintainAspectRatio: false,
+};
 
 let PieChart = () => {
   const classes = useStyles();
@@ -47,19 +68,35 @@ let PieChart = () => {
   return (
     <>
       <div className={classes.wrapper}>
-        <h1 style={{ fontSize: "1em" }}>Pie Chart</h1>
         <Pie width={10} height={0} data={data} />
       </div>
     </>
   );
 };
 let BarChart = () => {
-  return <div>barchart</div>;
+  const classes = useStyles();
+
+  return (
+    <div className={classes.wrapper}>
+      <Bar data={data} options={options} />
+    </div>
+  );
 };
 
 let HeatMap = () => {
+  const classes = useStyles();
+
   return <div>Heatmap</div>;
 };
+let LineChart = () => {
+  const classes = useStyles();
 
-export { PieChart, BarChart, HeatMap };
+  return (
+    <div className={classes.wrapper}>
+      <Line data={data} options={options} />
+    </div>
+  );
+};
+
+export { PieChart, BarChart, HeatMap, LineChart };
 //  export default PieChart;
