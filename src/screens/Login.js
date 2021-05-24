@@ -66,6 +66,15 @@ export default function Login() {
     password: "",
   });
 
+  useEffect(() => {
+    // if user is already logged in then redirect it to the dashboard
+    let alreadyLogIn = localStorage.getItem("isLoggedIn");
+    console.log(alreadyLogIn);
+    if (alreadyLogIn) {
+      setRedirect(true);
+    }
+  }, []);
+
   const validatePassword = () => {
     // console.log("lol", loginData.password);
     if (!isValidPassword(loginData.password)) {

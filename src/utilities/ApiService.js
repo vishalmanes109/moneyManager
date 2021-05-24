@@ -1,17 +1,20 @@
 import axios from "axios";
 
-// Tracker  Services
+//--------------------------------------- Tracker  Services----------------------------
 
 const getTotalTransactionForMonth = async (userId) => {
   let netTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
-
+  let token = localStorage.getItem("token");
   try {
     let url = baseUrl + "transaction/total/" + userId;
     // console.log(url);
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     netTransactionData = response.data.result;
+    console.log(netTransactionData);
   } catch (error) {
     console.error(error);
   }
@@ -21,11 +24,14 @@ const getTotalTransactionForMonth = async (userId) => {
 const getRecentTransaction = async (userId) => {
   let recentTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
 
   try {
     let url = baseUrl + "transaction/recent/" + userId;
     // console.log(url);
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     recentTransactionData = response.data.result;
   } catch (error) {
@@ -34,10 +40,31 @@ const getRecentTransaction = async (userId) => {
   return recentTransactionData;
 };
 
-// User Services
+// ---------------------------------Stats Service -------------------------------------------
+const getChartData = async (userId, chart, filter) => {
+  let recentTransactionData = {};
+  let baseUrl = `http://localhost:3003/`;
+  let token = localStorage.getItem("token");
+
+  try {
+    let url =
+      baseUrl + `stats/chart?user_id=${userId}&chart=${chart}&filter=${filter}`;
+    // console.log(url);
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    recentTransactionData = response.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+  return recentTransactionData;
+};
+//---------------------------------- User Services ----------------------------------
 const userRegistration = async (userData) => {
   // console.log(userData);
   let baseUrl = `http://localhost:3001/`;
+  // by default add currency as indian (5 is mapped to RS) theme to light user can change this from profile
   userData = { ...userData, avatar: "avatar", currency_id: 5, theme: "light" };
   // console.log(userData);
   let registrationResult = {};
@@ -93,4 +120,5 @@ export {
   isUserNameAvailable,
   getRecentTransaction,
   userLogin,
+  getChartData,
 };
