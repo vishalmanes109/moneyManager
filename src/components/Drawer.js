@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer({ props }) {
+  console.log(" prop", props);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -171,6 +172,16 @@ export default function MiniDrawer({ props }) {
             </IconButton>
           </div>
           <Divider />
+          {/* <List>
+            {icon.map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  <text></text>
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List> */}
           <List>
             <Link style={{ textDecoration: "none" }} to="register">
               <ListItem button key={"Profile"}>
@@ -213,6 +224,7 @@ export default function MiniDrawer({ props }) {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
+          {props.selectorComponent}
           {props}
         </main>
       </div>
