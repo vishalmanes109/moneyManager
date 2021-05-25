@@ -93,7 +93,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer({ props }) {
-  console.log(" prop", props);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 

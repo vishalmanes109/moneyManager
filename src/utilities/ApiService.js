@@ -42,7 +42,7 @@ const getRecentTransaction = async (userId) => {
 
 // ---------------------------------Stats Service -------------------------------------------
 const getChartData = async (userId, chart, filter) => {
-  let recentTransactionData = {};
+  let chartData = {};
   let baseUrl = `http://localhost:3003/`;
   let token = localStorage.getItem("token");
 
@@ -53,12 +53,22 @@ const getChartData = async (userId, chart, filter) => {
     const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
-
-    recentTransactionData = response.data.result;
+    chartData = response.data.result;
+    // console.log(chartData);
   } catch (error) {
     console.error(error);
   }
-  return recentTransactionData;
+  return chartData;
+};
+
+const getAllChartData = async (userId) => {
+  // by default when component did mount get all chart data
+  let pie = await getChartData(userId, "pie", "transaction_type");
+  let bar = await getChartData(userId, "bar", "expense");
+  let line = await getChartData(userId, "line", "expense");
+  let allChartData = { pie, bar, line };
+  console.log(allChartData);
+  return allChartData;
 };
 //---------------------------------- User Services ----------------------------------
 const userRegistration = async (userData) => {
@@ -121,4 +131,5 @@ export {
   getRecentTransaction,
   userLogin,
   getChartData,
+  getAllChartData,
 };

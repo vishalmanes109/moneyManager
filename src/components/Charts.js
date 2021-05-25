@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Bar, Line } from "react-chartjs-2";
 
@@ -21,7 +21,6 @@ const data = {
   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
   datasets: [
     {
-      label: "# of Votes",
       data: [12, 19, 3, 5, 2, 3],
       backgroundColor: [
         "rgba(255, 99, 132, 0.2)",
@@ -62,23 +61,90 @@ const options = {
   // maintainAspectRatio: false,
 };
 
-let PieChart = () => {
+let PieChart = ({ data }) => {
   const classes = useStyles();
+  let labels = [];
+  let amount = [];
+  console.log("datar", data);
+  data.forEach((ele) => {
+    labels.push(ele.type);
+    amount.push(ele.total);
+  });
+  console.log("labels : ", labels);
+  console.log("amount : ", amount);
+  let pieData = {
+    labels,
+    datasets: [
+      {
+        data: amount,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <>
       <div className={classes.wrapper}>
-        <Pie width={10} height={0} data={data} />
+        <Pie width={10} height={0} data={pieData} />
       </div>
     </>
   );
 };
-let BarChart = () => {
+let BarChart = ({ data }) => {
   const classes = useStyles();
-
+  let labels = [];
+  let amount = [];
+  console.log("datar", data);
+  data.forEach((ele) => {
+    labels.push(ele.month);
+    amount.push(ele.monthly_sum);
+  });
+  console.log("labels : ", labels);
+  console.log("amount : ", amount);
+  let barData = {
+    labels,
+    datasets: [
+      {
+        data: amount,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <div className={classes.wrapper}>
-      <Bar data={data} options={options} />
+      <Bar data={barData} options={options} />
     </div>
   );
 };
@@ -88,12 +154,45 @@ let HeatMap = () => {
 
   return <div>Heatmap</div>;
 };
-let LineChart = () => {
+let LineChart = ({ data }) => {
   const classes = useStyles();
-
+  let labels = [];
+  let amount = [];
+  console.log("data", data);
+  data.forEach((ele) => {
+    labels.push(ele.date_trunc);
+    amount.push(ele.sum);
+  });
+  console.log("labels : ", labels);
+  console.log("amount : ", amount);
+  let lineData = {
+    labels,
+    datasets: [
+      {
+        data: amount,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   return (
     <div className={classes.wrapper}>
-      <Line data={data} options={options} />
+      <Line data={lineData} options={options} />
     </div>
   );
 };

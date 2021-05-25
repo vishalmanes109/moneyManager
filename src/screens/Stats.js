@@ -2,16 +2,11 @@ import React, { useState, useEffect } from "react";
 import MiniDrawer from "../components/Drawer";
 // import { PieChart } from "./Charts";
 
-import { TransactionMeta, RecentMeta } from "../components/Cards";
-import { Grid } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { PieChart, BarChart, LineChart } from "../components/Charts";
 
-import {
-  getRecentTransaction,
-  getTotalTransactionForMonth,
-} from "../utilities/ApiService";
+import { getAllChartData } from "../utilities/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,42 +28,45 @@ const Dashboard = () => {
   //   let [recentTransactionData, setRecentTransactionData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [chartData, setChartData] = useState({
+    pie: {},
+    bar: {},
+    heatmap: {},
+    line: {},
+  });
+
   useEffect(() => {
-    async function fetchData() {
+    async function fetchChartData() {
       try {
-        // setLoading(true);
-        // // Forget any past errors
-        // setError(null);
-        // let result = await getTotalTransactionForMonth(userId);
-        // // console.log("result: ", result);
-        // setNetTransactiondata(result);
-        // let recentDataResult = await getRecentTransaction(userId);
-        // setRecentTransactionData(recentDataResult);
-        // console.log("after set: ", recentDataResult);
+        setLoading(true);
+        setError(null);
+        let result = await getAllChartData(userId);
+        setChartData(result);
+        console.log("after set: ", chartData);
       } catch (err) {
-        // console.error(err);
-        // setError(error);
+        console.error(err);
+        setError(error);
       }
-      //   setLoading(false);
+      setLoading(false);
     }
-    fetchData();
+    fetchChartData();
   }, []);
 
   let StatsContent = (
     <div style={{ maxWidth: "360px" }}>
       <div style={{ margin: "0 auto", width: "90%" }}>
         This is pie
-        <PieChart></PieChart>
+        <PieChart data={chartData.pie}></PieChart>
       </div>
 
       <div style={{ margin: "0 auto", width: "90%" }}>
         This is bar
-        <BarChart></BarChart>
+        <BarChart data={chartData.bar}></BarChart>
       </div>
-
       <div style={{ margin: "0 auto", width: "90%" }}>
         This is Line
-        <LineChart></LineChart>
+        <LineChart data={chartData.line}></LineChart>
       </div>
     </div>
   );
