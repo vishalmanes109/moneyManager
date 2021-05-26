@@ -8,6 +8,9 @@ import MiniDrawer from "./components/Drawer";
 import NotFound from "./components/404";
 import Dashboard from "./screens/Dashboard";
 import Stats from "./screens/Stats";
+import AddTrasaction from "./screens/AddTransaction";
+import UpdateTransaction from "./screens/UpdateTransaction";
+
 function App() {
   return (
     <Router>
@@ -19,8 +22,12 @@ function App() {
             <Route path="/dashboard" component={Dashboard}></Route>
             <Route path="/drawer" component={MiniDrawer}></Route>
             <Route path="/stats" component={Stats}></Route>
+            <Route path="/add_transaction" component={AddTrasaction}></Route>
+            <Route
+              path="/update_transaction"
+              component={UpdateTransaction}
+            ></Route>
             <Route path="/" exact component={Dashboard}></Route>
-
             <Route component={NotFound}></Route>
           </Switch>
         </header>
