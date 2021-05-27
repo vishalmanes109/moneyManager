@@ -10,8 +10,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     "& > *": {
-      margin: theme.spacing(1),
+      marginBottom: "-60px",
     },
+    width: "100%",
+  },
+  navbar: {
+    background: "grey",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontSize: "2em",
   },
 }));
 
@@ -19,21 +27,19 @@ export default function GroupSizesColors() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <ButtonGroup
-        size="large"
-        color="primary"
-        aria-label="large outlined primary button group"
-      >
-        <Link style={{ textDecoration: "none" }} to="dashboard">
-          <Button>DashBoard</Button>
-        </Link>
-        <Link style={{ textDecoration: "none" }} to="login">
-          <Button>Login</Button>
-        </Link>
-        <Link style={{ textDecoration: "none" }} to="register">
-          <Button>Signup</Button>
-        </Link>
+    <div>
+      <ButtonGroup className={classes.navbar} size="large" color="primary">
+        <div>
+          <Link style={{ textDecoration: "none" }} to="dashboard">
+            <Button>DashBoard</Button>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to="login">
+            <Button>Login</Button>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to="register">
+            <Button>Signup</Button>
+          </Link>
+        </div>
       </ButtonGroup>
     </div>
   );
