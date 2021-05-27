@@ -10,7 +10,7 @@ import Dashboard from "./screens/Dashboard";
 import Stats from "./screens/Stats";
 import AddTrasaction from "./screens/AddTransaction";
 import UpdateTransaction from "./screens/UpdateTransaction";
-
+import TransactionForm from "./components/TransactionForm";
 function App() {
   return (
     <Router>
@@ -28,6 +28,7 @@ function App() {
               component={UpdateTransaction}
             ></Route>
             <Route path="/" exact component={Dashboard}></Route>
+            <Route path="/form" component={TransactionForm}></Route>
             <Route component={NotFound}></Route>
           </Switch>
         </header>
