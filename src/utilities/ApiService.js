@@ -40,6 +40,76 @@ const getRecentTransaction = async (userId) => {
   return recentTransactionData;
 };
 
+const addTrasaction = async (transactionData) => {
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let response;
+  try {
+    let url = baseUrl + "transaction";
+    // console.log(url);
+    response = await axios.post(url, transactionData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.log(error);
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+const deleteTransaction = async (transactionId) => {
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let response;
+  try {
+    let url = baseUrl + `transaction/id${transactionId}`;
+    // console.log(url);
+    response = await axios.delete(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.log(error);
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+const updateTrasaction = async (transactionData) => {
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let response;
+  try {
+    let url = baseUrl + "transaction";
+    // console.log(url);
+    response = await axios.patch(url, transactionData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.log(error);
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+
+const getTransactionById = async (transactionId) => {
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let response;
+  try {
+    let url = baseUrl + `transaction/id/${transactionId}`;
+    // console.log(url);
+    response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.log(error);
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+
 // ---------------------------------Stats Service -------------------------------------------
 const getChartData = async (userId, chart, filter) => {
   let chartData = {};
@@ -126,6 +196,10 @@ const isUserNameAvailable = async (userName) => {
 };
 export {
   getTotalTransactionForMonth,
+  addTrasaction,
+  updateTrasaction,
+  deleteTransaction,
+  getTransactionById,
   userRegistration,
   isUserNameAvailable,
   getRecentTransaction,

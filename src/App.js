@@ -11,6 +11,7 @@ import Stats from "./screens/Stats";
 import AddTrasaction from "./screens/AddTransaction";
 import UpdateTransaction from "./screens/UpdateTransaction";
 import TransactionForm from "./components/TransactionForm";
+import SearchTransactions from "./screens/SearchTransaction";
 function App() {
   return (
     <Router>
@@ -22,6 +23,7 @@ function App() {
             <Route path="/dashboard" component={Dashboard}></Route>
             <Route path="/drawer" component={MiniDrawer}></Route>
             <Route path="/stats" component={Stats}></Route>
+            <Route path="/search" component={SearchTransactions}></Route>
             <Route path="/add_transaction" component={AddTrasaction}></Route>
             <Route
               path="/update_transaction"
