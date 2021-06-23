@@ -1,275 +1,356 @@
-import React, { useEffect, useRef, useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-
-import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Avatar from "@material-ui/core/Avatar";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import Alert from "@material-ui/lab/Alert";
-import { Redirect } from "react-router-dom";
-
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
+  root: {
+    flexGrow: 1,
+    marginTop: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: "green",
-  },
+
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  header: {
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-    background: "#008000",
-    color: "white",
+    margin: theme.spacing(1),
+
+    backgroundColor: "green",
+    width: "20px",
   },
 }));
-export default function Form({ name }) {
-  const classes = useStyles();
-  let currency = "";
 
-  let [data, setData] = useState({
+export default function Form({ name, transData }) {
+  const classes = useStyles();
+
+  let [transactionData, setTransactionData] = useState({
     title: "",
     description: "",
-    amount: 0,
-    transaction_type: "",
-    category: "",
-    currency: "",
+    amount: "",
+    date: "",
+    mode_of_payment: "",
+    essential: "",
+    category_id: "",
+    currency_id: "",
+    transaction_type_id: "",
   });
 
-  let currencyData = [
-    { value: 1, name: "RS" },
-    { value: 2, name: "YEN" },
-    { value: 3, name: "USD" },
-  ];
-  let categoryData = [
-    { value: 1, name: "Shopping" },
-    { value: 2, name: "Heath care" },
-    { value: 3, name: "dine out" },
-  ];
-  let [transactionType, setTransactionType] = useState("");
   let [error, setError] = useState(false);
+  let [success, setSuccess] = useState(false);
   let [message, setMessage] = useState("");
-  useEffect(() => {
-    if (name === "Update") {
-      // fetch the data and store it into data using setData()
-    }
-    currency = localStorage.getItem("currency");
-    setData((prevState) => ({
-      ...prevState,
-      currency: currency,
-    }));
-  }, []);
-
   const handleInput = (e) => {
     const { id, value } = e.target;
-    // ...prevState means it takes prev object and spreads it value (using ....)
-    //  eg. initial time prevSate object id {name: "",email:"",password:"" }
+    // ...prevState means it takes prev object and spreads it value .... eg. initial time prevSate object id {name: "",email:"",password:"" }
     // so it got spread as name="", email="", password="" single variable and not an array
 
     // [id]:value => this takes value from e.target.value and put it into e.target.id for every entity in prevState object
-    setData((prevState) => ({
+    setTransactionData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
   };
-  const resetError = () => {
-    setError(false);
-    setMessage("");
+  useEffect(() => {
+    if (name === "Update") {
+      setTransactionData(transData);
+    }
+  }, []);
+  const resetData = () => {
+    setTransactionData({
+      title: "",
+      description: "",
+      amount: "",
+      date: "",
+      mode_of_payment: "",
+      essential: "",
+      category_id: "",
+      currency_id: "",
+      transaction_type_id: "",
+    });
   };
-
-  let submit = (e) => {
-    e.preventDefault();
-
-    if (
-      (!data.title || !data.description,
-      !data.transaction_type || !data.category)
-    ) {
+  const validateData = () => {
+    if (!transactionData.title) {
       setError(true);
-      setMessage("Please Fill Required details");
-    } else if (data.title.length > 50) {
+      setMessage("Please enter valid title: MAX 50 Characters");
+      return false;
+    }
+    if (!transactionData.description) {
       setError(true);
-      setMessage("Title must be less 50 character");
-    } else if (data.description.length > 200) {
-      setError(true);
-      setMessage("Description must be less 200 character");
-    } else if (data.amount < 1) {
-      setError(true);
-      setMessage("Amount must be greater than 0");
+      setMessage("Please enter valid description");
+      return false;
     }
 
-    console.log(data);
-    console.log(error);
-    console.log(message);
+    if (!transactionData.amount || transactionData.amount < 1) {
+      setError(true);
+      setMessage("Please enter valid amount (must be greater than 0)");
+      return false;
+    }
+
+    if (!transactionData.transaction_type_id) {
+      setError(true);
+      setMessage("Please select valid transaction Type");
+      return false;
+    }
+    if (!transactionData.date) {
+      setError(true);
+      setMessage("Please enter valid Date");
+      return false;
+    }
+
+    if (!transactionData.mode_of_payment) {
+      setError(true);
+      setMessage("Please enter valid Mode of payment");
+      return false;
+    }
+    if (!transactionData.essential) {
+      setError(true);
+      setMessage("Please select essential ");
+      return false;
+    }
+    if (!transactionData.category_id) {
+      setError(true);
+      setMessage("Please select valid category");
+      return false;
+    }
+    if (!transactionData.currency_id) {
+      setError(true);
+      setMessage("Please select valid Currency");
+      return false;
+    }
+
+    return true;
+  };
+
+  const submit = async (e) => {
+    let isValide = true;
+    e.preventDefault();
+    console.log(transactionData);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    isValide = validateData();
+    // console.log(isValide);
+    if (isValide === false) return;
+    try {
+      setSuccess(true);
+
+      setError(false);
+      setMessage("");
+      // let result = await addUser(userData);
+      let result;
+      // console.log("result login", result);
+
+      if (result && result.success !== 1) {
+        setError(true);
+        setMessage("user addition Falied");
+        return;
+      }
+
+      if (result && result.success === 1) {
+        // console.log("lol:", result.data);
+        resetData();
+        setError(false);
+        setSuccess(true);
+        setMessage("User Added Succesfully!");
+
+        return;
+      }
+    } catch (err) {
+      setError(true);
+      setMessage("Error! please try again");
+    }
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
+    <>
+      <div className={classes.header}>
+        <h3>{name} Transaction Details</h3>
         <Avatar className={classes.avatar}>
           <PostAddIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          {name} Transaction
-        </Typography>
         {error === true ? (
           <Alert severity="error">{message}</Alert>
         ) : (
           <div></div>
         )}
-
-        <form className={classes.form} noValidate onSubmit={submit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="title"
-            label="Title"
-            name="title"
-            autoComplete="title"
-            value={data.title}
-            autoFocus
-            onChange={handleInput}
-            onFocus={resetError}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            multiline
-            rows={4}
-            required
-            fullWidth
-            id="description"
-            label="Description"
-            name="description"
-            autoComplete="description"
-            value={data.description}
-            onChange={handleInput}
-            onFocus={resetError}
-          />
-          <TextField
-            type="number"
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="amount"
-            label="Amount"
-            name="amount"
-            autoComplete="amount"
-            value={data.amount}
-            onChange={handleInput}
-            onFocus={resetError}
-          />
-          <br />
-          <br />
-          <FormControl variant="outlined" required fullWidth>
-            <InputLabel>Transaction Type</InputLabel>
-            <Select
-              native
-              id="transaction_type"
-              variant="outlined"
-              margin="normal"
-              value={data.transaction_type}
-              onChange={handleInput}
-              label="Transaction Type"
-              onFocus={resetError}
-            >
-              <option aria-label="None" value="" />
-              <option value={"income"}>Income</option>
-              <option value={"expense"}>Expense</option>
-              <option value={"transfer"}>Transfer</option>
-            </Select>
-          </FormControl>
-          <br />
-          <br />
-
-          {/* {data.transaction_type === "income" ? (
-            <div></div>
-          ) : (
-            <div></div>
-          )} */}
-
-          <FormControl variant="outlined" required fullWidth>
-            <InputLabel>Category</InputLabel>
-            <Select
-              native
-              variant="outlined"
-              margin="normal"
-              id="category"
-              value={data.category}
-              onChange={handleInput}
-              label="Category"
-              onFocus={resetError}
-            >
-              <option aria-label="None" value="" />
-              {categoryData.map((category) => {
-                return (
-                  <>
-                    <option value={category.value}>{category.name}</option>
-                  </>
-                );
-              })}
-            </Select>
-          </FormControl>
-
-          <br />
-          <br />
-
-          <FormControl variant="outlined" required fullWidth>
-            <InputLabel>Currency</InputLabel>
-            <Select
-              native
-              variant="outlined"
-              margin="normal"
-              id="currency"
-              value={data.currency}
-              onChange={handleInput}
-              label="Currency"
-              onFocus={resetError}
-            >
-              <option value={data.currency}>{data.currency}</option>
-
-              {currencyData.map((currency) => {
-                return (
-                  <>
-                    <option value={currency.name}>{currency.name}</option>
-                  </>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <br></br>
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className={classes.submit}
-          >
-            {name}
-          </Button>
-        </form>
+        {success === true ? (
+          <Alert severity="info">{message}</Alert>
+        ) : (
+          <div></div>
+        )}
       </div>
-    </Container>
+      <form
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={submit}
+      >
+        <Grid className={classes.form} container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              id="title"
+              label="Title"
+              value={transactionData.title}
+              helperText="Enter title MAX 50 Characters"
+              variant="outlined"
+              onChange={handleInput}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              id="description"
+              label="Description "
+              value={transactionData.description}
+              helperText="Enter description of transaction"
+              variant="outlined"
+              required
+              onChange={handleInput}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              type="number"
+              fullWidth
+              id="amount"
+              label="Amount"
+              value={transactionData.amount}
+              helperText="Enter Amount of transaction (only numbers)"
+              variant="outlined"
+              onChange={handleInput}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel>Transaction Type</InputLabel>
+              <Select
+                native
+                required
+                id="transaction_type_id"
+                value={transactionData.transaction_type_id}
+                onChange={handleInput}
+              >
+                <option aria-label="None" value="" />
+                <option value={1}>Income</option>
+                <option value={2}>Expense</option>
+                <option value={3}>Transafer</option>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              type="date"
+              // defaultValue="2021-05-24"
+              id="date"
+              label="Date"
+              variant="outlined"
+              value={transactionData.date}
+              onChange={handleInput}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" required fullWidth>
+              <InputLabel>Mode Of Payment</InputLabel>
+              <Select
+                native
+                id="mode_of_payment"
+                value={transactionData.mode_of_payment}
+                onChange={handleInput}
+                required
+              >
+                <option aria-label="None" value="" />
+                <option value={"Cash"}>Cash</option>
+                <option value={"Debit"}>Debit</option>
+                <option value={"Credit"}>Credit</option>
+                <option value={"Cheque"}>Cheque</option>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" required fullWidth>
+              <InputLabel>Essential</InputLabel>
+              <Select
+                native
+                id="essential"
+                value={transactionData.essential}
+                onChange={handleInput}
+                required
+              >
+                <option aria-label="None" value="" />
+                <option value={"Yes"}>Yes</option>
+                <option value={"No"}>No</option>
+                <option value={"maybe"}>Maybe</option>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" required fullWidth>
+              <InputLabel>Category</InputLabel>
+              <Select
+                required
+                native
+                id="category_id"
+                value={transactionData.category_id}
+                onChange={handleInput}
+              >
+                <option aria-label="None" value="" />
+
+                <option value={1}>Heath care</option>
+                <option value={2}>Education</option>
+                <option value={3}>Dine out</option>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel>Currency</InputLabel>
+              <Select
+                native
+                id="currency_id"
+                value={transactionData.currency_id}
+                onChange={handleInput}
+              >
+                <option aria-label="None" value="" />
+                <option value={1}>RS</option>
+                <option value={2}>USD</option>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <br></br>
+        <Button
+          onClick={submit}
+          type="submit"
+          variant="outlined"
+          color="primary"
+          // className={classes.submit}
+        >
+          Submit
+        </Button>
+        <br></br>
+      </form>
+    </>
   );
 }

@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Form from "../components/Form";
-import Nav from "../components/Nav";
+import MiniDrawer from "../components/Drawer";
+
 export default function AddTrasaction() {
   return (
     <>
-      <Nav></Nav>
-      <Form name="Add"></Form>
+      return{" "}
+      <MiniDrawer
+        props={
+          <>
+            <Form name="Add"></Form>
+          </>
+        }
+      ></MiniDrawer>
+      ;
     </>
   );
 }
