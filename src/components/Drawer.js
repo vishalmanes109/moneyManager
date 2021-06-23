@@ -18,14 +18,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import PollIcon from "@material-ui/icons/Poll";
+import PostAddIcon from "@material-ui/icons/PostAdd";
 import SettingsApplicationsIcon from "@material-ui/icons/SettingsApplications";
-
+import FindInPageIcon from "@material-ui/icons/FindInPage";
 import { Link } from "react-router-dom";
-import {
-  getRecentTransaction,
-  getTotalTransactionForMonth,
-} from "../utilities/ApiService";
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -93,9 +89,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer({ props }) {
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -207,6 +200,24 @@ export default function MiniDrawer({ props }) {
                   <PollIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Stats"} />
+              </ListItem>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="add_transaction">
+              <ListItem button key={"Add Transaction"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <PostAddIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Add Transaction"} />
+              </ListItem>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="add_transaction">
+              <ListItem button key={"Search Transactions"}>
+                {/* <a href="google.com"> </a> */}
+                <ListItemIcon>
+                  <FindInPageIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Search Transactions"} />
               </ListItem>
             </Link>
             <Link style={{ textDecoration: "none" }} to="setting">

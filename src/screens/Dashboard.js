@@ -51,6 +51,10 @@ const Dashboard = () => {
     }
     fetchData();
   }, []);
+  const showTransaction = (id) => {
+    // redirect to the show transaction page
+    console.log("transId", id);
+  };
 
   let DashboardContent = (
     <>
@@ -71,13 +75,19 @@ const Dashboard = () => {
       <div className={classes.list}>
         Recent Transaction
         {recentTransactionData.map((transaction) => (
-          <RecentMeta
-            title={transaction.title}
-            amount={transaction.amount}
-            type={transaction.transaction_type_id}
-            description={transaction.description}
-            symbol={transaction.symbol}
-          ></RecentMeta>
+          <div
+            onClick={() => {
+              showTransaction(transaction.id);
+            }}
+          >
+            <RecentMeta
+              title={transaction.title}
+              amount={transaction.amount}
+              type={transaction.transaction_type_id}
+              description={transaction.description}
+              symbol={transaction.symbol}
+            ></RecentMeta>
+          </div>
         ))}
       </div>
     </>
