@@ -16,6 +16,7 @@ import Alert from "@material-ui/lab/Alert";
 import { Redirect } from "react-router-dom";
 
 import { userLogin } from "../utilities/ApiService";
+import MiniDrawer from "../components/Drawer";
 
 import { isValidString, isValidPassword } from "../utilities/validator";
 function Copyright() {
@@ -164,8 +165,7 @@ export default function Login() {
       setErrorMessage("error");
     }
   };
-
-  return (
+  const logincomponent = (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       {redirect === true ? (
@@ -261,4 +261,5 @@ export default function Login() {
       </Box>
     </Container>
   );
+  return <MiniDrawer props={logincomponent}></MiniDrawer>;
 }

@@ -12,6 +12,8 @@ import AddTrasaction from "./screens/AddTransaction";
 import UpdateTransaction from "./screens/UpdateTransaction";
 import TransactionForm from "./components/TransactionForm";
 import SearchTransactions from "./screens/SearchTransaction";
+import TransactionCard from "./components/TransactionCard";
+import Setting from "./screens/setting";
 function App() {
   return (
     <Router>
@@ -19,12 +21,14 @@ function App() {
         <header className="App-header">
           <Switch>
             <Route path="/register" exact component={Register}></Route>
+            <Route path="/transcard" exact component={TransactionCard}></Route>
             <Route path="/login" exact component={Login}></Route>
             <Route path="/dashboard" component={Dashboard}></Route>
             <Route path="/drawer" component={MiniDrawer}></Route>
             <Route path="/stats" component={Stats}></Route>
             <Route path="/search" component={SearchTransactions}></Route>
             <Route path="/add_transaction" component={AddTrasaction}></Route>
+            <Route path="/setting" component={Setting}></Route>
             <Route
               path="/update_transaction"
               component={UpdateTransaction}

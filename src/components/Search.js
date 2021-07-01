@@ -53,14 +53,13 @@ const useStyles = makeStyles((theme) => ({
 export default function UserForm() {
   const classes = useStyles();
 
-  let [userData, setUserData] = useState({
-    name: "",
-    pno: "",
-    address: "",
-    gender: "",
-    groupIncharge: "",
-    status: "",
-    bloodGroup: "",
+  let [searchData, setsearchData] = useState({
+    title: "",
+    description: "",
+    category_id: "",
+    essential: "",
+    transaction_type: "",
+    period: "",
   });
 
   let [resultArray, setResultArray] = useState([]);
@@ -75,7 +74,7 @@ export default function UserForm() {
     // so it got spread as name="", email="", password="" single variable and not an array
 
     // [id]:value => this takes value from e.target.value and put it into e.target.id for every entity in prevState object
-    setUserData((prevState) => ({
+    setsearchData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
@@ -85,48 +84,47 @@ export default function UserForm() {
     setSelectedAttribute(e.target.value);
   };
   const resetData = () => {
-    setUserData({
-      po: "",
-      name: "",
-      address: "",
-      gender: "",
-      groupIncharge: "",
-      status: "",
-      bloodGroup: "",
+    setsearchData({
+      title: "",
+      description: "",
+      category_id: "",
+      essential: "",
+      transaction_type: "",
+      period: "",
     });
   };
   const validateData = () => {
-    if (selectedAttribute === "name" && !userData.name) {
+    if (selectedAttribute === "name" && !searchData.name) {
       setError(true);
       setMessage("Please enter valid name");
       return false;
     }
-    if (selectedAttribute === "address" && !userData.address) {
+    if (selectedAttribute === "address" && !searchData.address) {
       setError(true);
       setMessage("Please enter valid address");
       return false;
     }
-    if (selectedAttribute === "pno" && !userData.pno) {
+    if (selectedAttribute === "pno" && !searchData.pno) {
       setError(true);
       setMessage("Please enter valid P.NO");
       return false;
     }
-    if (selectedAttribute === "gender" && !userData.gender) {
+    if (selectedAttribute === "gender" && !searchData.gender) {
       setError(true);
       setMessage("Please select  gender");
       return false;
     }
-    if (selectedAttribute === "groupIncharge" && !userData.groupIncharge) {
+    if (selectedAttribute === "groupIncharge" && !searchData.groupIncharge) {
       setError(true);
       setMessage("Please enter  groupIncharge name");
       return false;
     }
-    if (selectedAttribute === "status" && !userData.status) {
+    if (selectedAttribute === "status" && !searchData.status) {
       setError(true);
       setMessage("Please select  status");
       return false;
     }
-    if (selectedAttribute === "bloodGroup" && !userData.bloodGroup) {
+    if (selectedAttribute === "bloodGroup" && !searchData.bloodGroup) {
       setError(true);
       setMessage("Please select  bloodGroup");
       return false;
@@ -136,7 +134,7 @@ export default function UserForm() {
   const submit = async (e) => {
     let isValide = true;
     e.preventDefault();
-    // console.log(userData);
+    // console.log(searchData);
     // console.log("selectedAttribute: ", selectedAttribute);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -194,112 +192,112 @@ export default function UserForm() {
   };
 
   let searchBlock;
-  if (selectedAttribute === "name") {
+  if (selectedAttribute === "title") {
     searchBlock = (
       <Grid item xs={12} sm={6}>
         <TextField
           fullWidth
-          id="name"
-          label="Name"
-          value={userData.name}
-          helperText="Enter Name only"
+          id="title"
+          label="Title"
+          value={searchData.title}
+          helperText="Enter Title"
           variant="outlined"
           required
           onChange={handleInput}
         />
       </Grid>
     );
-  } else if (selectedAttribute === "pno") {
+  } else if (selectedAttribute === "description") {
     searchBlock = (
       <Grid item xs={12} sm={6}>
         <TextField
           fullWidth
-          id="pno"
-          label="P. No."
-          type="number"
-          value={userData.pno}
-          helperText="Enter Personal No. "
+          id="description"
+          label="Description"
+          value={searchData.description}
+          helperText="Enter description you remember "
           variant="outlined"
           required
           onChange={handleInput}
         />
       </Grid>
     );
-  } else if (selectedAttribute === "address") {
+  } else if (selectedAttribute === "period") {
     searchBlock = (
-      <Grid item xs={12} sm={6}>
-        <TextField
-          fullWidth
-          id="address"
-          label="Enter city name"
-          value={userData.address}
-          variant="outlined"
-          required
-          onChange={handleInput}
-        />
-      </Grid>
+      <>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            id="startDate"
+            label="Slect start Date "
+            type="date"
+            value={searchData.startDate}
+            variant="outlined"
+            required
+            onChange={handleInput}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            id="endDate"
+            label="select end Date "
+            type="date"
+            value={searchData.endDate}
+            variant="outlined"
+            required
+            onChange={handleInput}
+          />
+        </Grid>
+      </>
     );
-  } else if (selectedAttribute === "gender") {
+  } else if (selectedAttribute === "transaction_type_id") {
     searchBlock = (
       <Grid item xs={12} sm={6}>
         <FormControl variant="outlined" fullWidth>
-          <InputLabel>Gender</InputLabel>
+          <InputLabel>Transaction Type</InputLabel>
           <Select
             native
-            id="gender"
-            value={userData.gender}
+            id="transaction_type_id"
+            value={searchData.transaction_type_id}
             onChange={handleInput}
           >
             <option aria-label="None" value="" />
-            <option value={"Male"}>Male</option>
-            <option value={"Female"}>Female</option>
+            <option value={1}>Income</option>
+            <option value={2}>Expense</option>
+            <option value={3}>Transfer</option>
           </Select>
         </FormControl>
       </Grid>
     );
-  } else if (selectedAttribute === "groupIncharge") {
-    searchBlock = (
-      <Grid item xs={12} sm={6}>
-        <TextField
-          fullWidth
-          required
-          id="groupIncharge"
-          value={userData.groupIncharge}
-          label="group Incharge Name "
-          variant="outlined"
-          onChange={handleInput}
-        />
-      </Grid>
-    );
-  } else if (selectedAttribute === "status") {
+  } else if (selectedAttribute === "essential") {
     searchBlock = (
       <Grid item xs={12} sm={6}>
         <FormControl variant="outlined" fullWidth>
-          <InputLabel>Status</InputLabel>
+          <InputLabel>Essential</InputLabel>
           <Select
             native
-            id="status"
-            value={userData.status}
+            id="essential"
+            value={searchData.essential}
             onChange={handleInput}
           >
             <option aria-label="None" value="" />
-
-            <option value={"Register"}>Register</option>
-            <option value={"Unregister"}>Unregister</option>
-            <option value={"BalSewadal"}>BalSewadal</option>
+            <option value={"yes"}>Yes</option>
+            <option value={"no"}>No</option>
+            <option value={"maybe"}>Maybe</option>
           </Select>
         </FormControl>
       </Grid>
     );
-  } else if (selectedAttribute === "bloodGroup") {
+  } else if (selectedAttribute === "category_id") {
     searchBlock = (
       <Grid item xs={12} sm={6}>
         <FormControl variant="outlined" fullWidth>
-          <InputLabel>Blood Group</InputLabel>
+          <InputLabel>Category</InputLabel>
           <Select
             native
-            id="bloodGroup"
-            value={userData.bloodGroup}
+            id="category_id"
+            value={searchData.category_id}
             onChange={handleInput}
           >
             <option aria-label="None" value="" />
@@ -341,46 +339,40 @@ export default function UserForm() {
               >
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="name"
+                  value="title"
                   control={<Radio color="primary" />}
-                  label="Name"
+                  label="Title"
                 />
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="gender"
+                  value="description"
                   control={<Radio color="primary" />}
-                  label="Gender"
+                  label="Description"
                 />
 
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="pno"
+                  value="transaction_type_id"
                   control={<Radio color="primary" />}
-                  label="Personal No"
+                  label="Transaction type"
                 />
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="groupIncharge"
+                  value="period"
                   control={<Radio color="primary" />}
-                  label="Group Incharge Name"
+                  label="Time Period"
                 />
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="address"
+                  value="essential"
                   control={<Radio color="primary" />}
-                  label="City Name"
+                  label="Essential"
                 />
                 <FormControlLabel
                   id="selectedAttribute"
-                  value="bloodGroup"
+                  value="category_id"
                   control={<Radio color="primary" />}
-                  label="Blood Group "
-                />
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="status"
-                  control={<Radio color="primary" />}
-                  label="Registration Status"
+                  label="Category "
                 />
               </RadioGroup>
             </FormControl>

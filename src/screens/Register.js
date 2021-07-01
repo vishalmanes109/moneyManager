@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import { userRegistration, isUserNameAvailable } from "../utilities/ApiService";
 import Alert from "@material-ui/lab/Alert";
 import { Redirect } from "react-router-dom";
+import MiniDrawer from "../components/Drawer";
 
 import {
   isValidString,
@@ -194,8 +195,7 @@ export default function SignUp() {
   };
 
   const classes = useStyles();
-
-  return (
+  const registerComponent = (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       {redirect === true ? (
@@ -319,5 +319,11 @@ export default function SignUp() {
         <Copyright />
       </Box>
     </Container>
+  );
+
+  return (
+    <>
+      <MiniDrawer props={registerComponent}></MiniDrawer>;
+    </>
   );
 }

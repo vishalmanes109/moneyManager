@@ -211,7 +211,7 @@ export default function MiniDrawer({ props }) {
                 <ListItemText primary={"Add Transaction"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="add_transaction">
+            <Link style={{ textDecoration: "none" }} to="search">
               <ListItem button key={"Search Transactions"}>
                 {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
