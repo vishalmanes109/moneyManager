@@ -92,6 +92,24 @@ const updateTrasaction = async (transactionData) => {
   return response;
 };
 
+const getTransactionByAttribute = async ({ attribute, value }) => {
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let response;
+  try {
+    let url = baseUrl + `transaction/attribute/${attribute}/${value}`;
+    // console.log(url);
+    response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.log(error);
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+
 const getTransactionById = async (transactionId) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
@@ -200,6 +218,7 @@ export {
   updateTrasaction,
   deleteTransaction,
   getTransactionById,
+  getTransactionByAttribute,
   userRegistration,
   isUserNameAvailable,
   getRecentTransaction,

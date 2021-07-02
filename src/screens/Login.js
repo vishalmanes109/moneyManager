@@ -3,8 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -59,9 +57,6 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  const [agree, setAgree] = useState({
-    checked: false,
-  });
   const [loginData, setLoginData] = useState({
     name: "",
     password: "",
@@ -106,12 +101,7 @@ export default function Login() {
   };
   const submit = async (e) => {
     e.preventDefault();
-    if (agree.checked === false) {
-      setError(true);
-      setErrorMessage("Please Agree To Terms & Privacy Policy");
 
-      return;
-    }
     let { name, password } = loginData;
     if (!isValidString(name)) {
       setError(true);
@@ -218,18 +208,6 @@ export default function Login() {
               autoComplete="current-password"
               onChange={handleInput}
               onBlur={validatePassword}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value="agree"
-                  id="isAgree"
-                  color="primary"
-                  defaultChecked={agree.checked}
-                  onChange={(e) => setAgree({ checked: e.target.checked })}
-                />
-              }
-              label="I am agreed to term and privacy policy."
             />
             <Button
               type="submit"

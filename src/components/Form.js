@@ -9,6 +9,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
+import { addTrasaction } from "../utilities/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Form({ name, transData }) {
   const classes = useStyles();
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = today.getFullYear();
 
+  let todayDate = mm + "/" + dd + "/" + yyyy;
   let [transactionData, setTransactionData] = useState({
     title: "",
     description: "",
@@ -151,27 +157,24 @@ export default function Form({ name, transData }) {
     // console.log(isValide);
     if (isValide === false) return;
     try {
-      setSuccess(true);
-
+      setSuccess(false);
       setError(false);
       setMessage("");
-      // let result = await addUser(userData);
-      let result;
-      // console.log("result login", result);
+      transactionData.user_id = localStorage.getItem("userid");
+      let result = await addTrasaction(transactionData);
+      console.log("result transa add", result);
 
       if (result && result.success !== 1) {
         setError(true);
-        setMessage("user addition Falied");
+        setMessage("transaction failed Falied");
         return;
       }
-
       if (result && result.success === 1) {
-        // console.log("lol:", result.data);
+        console.log("lol:", result.data);
         resetData();
         setError(false);
         setSuccess(true);
-        setMessage("User Added Succesfully!");
-
+        setMessage("Transaction Added Succesfully!");
         return;
       }
     } catch (err) {
@@ -262,7 +265,6 @@ export default function Form({ name, transData }) {
               fullWidth
               required
               type="date"
-              // defaultValue="2021-05-24"
               id="date"
               label="Date"
               variant="outlined"
