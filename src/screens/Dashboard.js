@@ -38,7 +38,7 @@ const Dashboard = () => {
         // Forget any past errors
         setError(null);
         let result = await getTotalTransactionForMonth(userId);
-        // console.log("result: ", result);
+        console.log(" getTotalTransactionForMonth result: ", result);
         setNetTransactiondata(result);
         let recentDataResult = await getRecentTransaction(userId);
         setRecentTransactionData(recentDataResult);

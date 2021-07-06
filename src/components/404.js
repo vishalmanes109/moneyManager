@@ -2,19 +2,9 @@ import React from "react";
 import { getTotalTransactionForMonth } from "../utilities/ApiService";
 import Nav from "./Nav";
 import "./notfound.css";
-export default function NotFound() {
+export default function Notfound() {
   return (
     <>
-      <Nav></Nav>
-      <button
-        onClick={() => {
-          getTotalTransactionForMonth(1);
-        }}
-      >
-        {" "}
-        CALL API
-      </button>
-
       <svg
         id="404-Dave"
         xmlns="http://www.w3.org/2000/svg"
@@ -202,6 +192,16 @@ export default function NotFound() {
           </g>
         </g>
       </svg>
+      <h1
+        style={{
+          color: "#0b3c5d",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        PAGE NOT FOUND
+      </h1>
     </>
   );
 }

@@ -14,6 +14,7 @@ import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import { Redirect } from "react-router-dom";
 import TransactionMeta from "../components/TrsanactionMeta";
 import MiniDrawer from "../components/Drawer";
+import { getTransactionByAttribute } from "../utilities/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -135,7 +136,7 @@ export default function UserForm() {
     let isValide = true;
     e.preventDefault();
     // console.log(searchData);
-    // console.log("selectedAttribute: ", selectedAttribute);
+    console.log("selectedAttribute: ", selectedAttribute);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
@@ -145,12 +146,12 @@ export default function UserForm() {
     try {
       setError(false);
       setMessage("");
-      let searchData = {
-        attribute: selectedAttribute,
-        value: selectedValue,
-      };
       // console.log(searchData);
-      let result = 10;
+      // let result = 10;
+      let result = await getTransactionByAttribute(
+        selectedAttribute,
+        selectedValue
+      );
       // // console.log("result :,", result);
       if (result && result.unauthorized) {
         setError(true);
@@ -383,10 +384,10 @@ export default function UserForm() {
             )}
           </div>
           <form
+            onSubmit={submit}
             className={classes.root}
             noValidate
             autoComplete="off"
-            onSubmit={submit}
           >
             <h3>Search By:</h3>
 

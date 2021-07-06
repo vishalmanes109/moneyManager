@@ -301,9 +301,9 @@ export default function Form({ name, transData }) {
                 required
               >
                 <option aria-label="None" value="" />
-                <option value={"Yes"}>Yes</option>
-                <option value={"No"}>No</option>
-                <option value={"maybe"}>Maybe</option>
+                <option value={1}>Yes</option>
+                <option value={0}>No</option>
+                <option value={2}>Maybe</option>
               </Select>
             </FormControl>
           </Grid>
