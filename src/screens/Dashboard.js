@@ -5,6 +5,7 @@ import MiniDrawer from "../components/Drawer";
 import { TransactionMeta, RecentMeta } from "../components/Cards";
 import { Grid } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { DashboardLoader } from "../components/LoadingComponent";
 
 import {
   getRecentTransaction,
@@ -29,23 +30,38 @@ const Dashboard = () => {
   let userId = 1;
   let [netTransactiondata, setNetTransactiondata] = useState([]);
   let [recentTransactionData, setRecentTransactionData] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
         // Forget any past errors
-        setError(null);
+        setError(false);
         let result = await getTotalTransactionForMonth(userId);
+
         console.log(" getTotalTransactionForMonth result: ", result);
+        if (
+          result &&
+          Object.keys(result).length === 0 &&
+          result.constructor === Object
+        ) {
+          // if result is empty
+          setError(true);
+          setLoading(false);
+        }
+
+        // if(result.length)
         setNetTransactiondata(result);
+
         let recentDataResult = await getRecentTransaction(userId);
         setRecentTransactionData(recentDataResult);
         console.log("after set: ", recentDataResult);
       } catch (err) {
-        console.error(err);
-        setError(error);
+        console.log("err: lol", err);
+
+        setError(true);
+        setLoading(false);
       }
       setLoading(false);
     }
@@ -58,41 +74,54 @@ const Dashboard = () => {
 
   let DashboardContent = (
     <>
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          {netTransactiondata.map((transaction) => (
-            <Grid className={classes.card} item xs={12} sm={3}>
-              <TransactionMeta
-                name={transaction.name}
-                total={transaction.total}
-              ></TransactionMeta>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-      <br />
-      <br></br>
-      <div className={classes.list}>
-        Recent Transaction
-        {recentTransactionData.map((transaction) => (
-          <div
-            onClick={() => {
-              showTransaction(transaction.id);
-            }}
-          >
-            <RecentMeta
-              title={transaction.title}
-              amount={transaction.amount}
-              type={transaction.transaction_type_id}
-              description={transaction.description}
-              symbol={transaction.symbol}
-            ></RecentMeta>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <DashboardLoader></DashboardLoader>
+      ) : (
+        <>
+          {" "}
+          {error ||
+          (netTransactiondata.length < 0 && recentTransactionData) < 0 ? (
+            <div> No Data Found </div>
+          ) : (
+            <>
+              <div className={classes.root}>
+                <Grid container spacing={3}>
+                  {netTransactiondata.map((transaction) => (
+                    <Grid className={classes.card} item xs={12} sm={3}>
+                      <TransactionMeta
+                        name={transaction.name}
+                        total={transaction.total}
+                      ></TransactionMeta>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+              <br />
+              <br></br>
+              <div className={classes.list}>
+                Recent Transaction
+                {recentTransactionData.map((transaction) => (
+                  <div
+                    onClick={() => {
+                      showTransaction(transaction.id);
+                    }}
+                  >
+                    <RecentMeta
+                      title={transaction.title}
+                      amount={transaction.amount}
+                      type={transaction.transaction_type_id}
+                      description={transaction.description}
+                      symbol={transaction.symbol}
+                    ></RecentMeta>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      )}
     </>
   );
-
   return <MiniDrawer props={DashboardContent}></MiniDrawer>;
 };
 
