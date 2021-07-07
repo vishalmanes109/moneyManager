@@ -8,6 +8,8 @@ import { PieChart, BarChart, LineChart } from "../components/Charts";
 
 import { getAllChartData } from "../utilities/ApiService";
 
+import { StatsLoader } from "../components/LoadingComponent";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -39,14 +41,31 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchChartData() {
       try {
+        console.log("before set: ");
         setLoading(true);
-        setError(null);
+        setError(false);
         let result = await getAllChartData(userId);
         setChartData(result);
-        console.log("after set: ", chartData);
+        console.log("after set: ", result);
+        if (
+          (result.pie &&
+            Object.keys(result.pie).length === 0 &&
+            result.pie.constructor === Object) ||
+          (result.bar &&
+            Object.keys(result.bar).length === 0 &&
+            result.bar.constructor === Object) ||
+          (result.line &&
+            Object.keys(result.line).length === 0 &&
+            result.line.constructor === Object)
+        ) {
+          console.log("in if:", result);
+          setError(true);
+          setLoading(false);
+        }
       } catch (err) {
         console.error(err);
-        setError(error);
+        setLoading(false);
+        setError(true);
       }
       setLoading(false);
     }
@@ -54,23 +73,35 @@ const Dashboard = () => {
   }, []);
 
   let StatsContent = (
-    <div style={{ maxWidth: "360px" }}>
-      <div style={{ margin: "0 auto", width: "90%" }}>
-        This is pie
-        <PieChart data={chartData.pie}></PieChart>
-      </div>
+    <>
+      {loading ? (
+        <StatsLoader></StatsLoader>
+      ) : (
+        <>
+          {" "}
+          {error ? (
+            <div>No data found or error</div>
+          ) : (
+            <div style={{ maxWidth: "360px" }}>
+              <div style={{ margin: "0 auto", width: "90%" }}>
+                This is pie
+                <PieChart data={chartData.pie}></PieChart>
+              </div>
 
-      <div style={{ margin: "0 auto", width: "90%" }}>
-        This is bar
-        <BarChart data={chartData.bar}></BarChart>
-      </div>
-      <div style={{ margin: "0 auto", width: "90%" }}>
-        This is Line
-        <LineChart data={chartData.line}></LineChart>
-      </div>
-    </div>
+              <div style={{ margin: "0 auto", width: "90%" }}>
+                This is bar
+                <BarChart data={chartData.bar}></BarChart>
+              </div>
+              <div style={{ margin: "0 auto", width: "90%" }}>
+                This is Line
+                <LineChart data={chartData.line}></LineChart>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </>
   );
-
   return <MiniDrawer props={StatsContent}></MiniDrawer>;
 };
 

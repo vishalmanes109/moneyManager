@@ -66,10 +66,11 @@ let PieChart = ({ data }) => {
   let labels = [];
   let amount = [];
   console.log("datar", data);
-  data.forEach((ele) => {
-    labels.push(ele.type);
-    amount.push(ele.total);
-  });
+  if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
+    data.forEach((ele) => {
+      labels.push(ele.type);
+      amount.push(ele.total);
+    });
   console.log("labels : ", labels);
   console.log("amount : ", amount);
   let pieData = {
@@ -111,10 +112,11 @@ let BarChart = ({ data }) => {
   let labels = [];
   let amount = [];
   console.log("datar", data);
-  data.forEach((ele) => {
-    labels.push(ele.month);
-    amount.push(ele.monthly_sum);
-  });
+  if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
+    data.forEach((ele) => {
+      labels.push(ele.month);
+      amount.push(ele.monthly_sum);
+    });
   console.log("labels : ", labels);
   console.log("amount : ", amount);
   let barData = {
@@ -159,10 +161,11 @@ let LineChart = ({ data }) => {
   let labels = [];
   let amount = [];
   console.log("data", data);
-  data.forEach((ele) => {
-    labels.push(ele.date_trunc);
-    amount.push(ele.sum);
-  });
+  if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
+    data.forEach((ele) => {
+      labels.push(ele.date_trunc);
+      amount.push(ele.sum);
+    });
   console.log("labels : ", labels);
   console.log("amount : ", amount);
   let lineData = {

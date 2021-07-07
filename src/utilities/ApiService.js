@@ -39,7 +39,6 @@ const getRecentTransaction = async (userId) => {
   }
   return recentTransactionData;
 };
-
 const addTrasaction = async (transactionData) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
@@ -92,12 +91,13 @@ const updateTrasaction = async (transactionData) => {
   return response;
 };
 
-const getTransactionByAttribute = async ({ attribute, value }) => {
+const getTransactionByAttribute = async (attribute, value) => {
+  console.log(attribute, value);
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let response;
   try {
-    let url = baseUrl + `transaction/attribute/${attribute}/${value}`;
+    let url = baseUrl + `transaction?attribute=${attribute}&value=${value}`;
     // console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
