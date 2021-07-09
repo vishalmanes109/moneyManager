@@ -61,7 +61,17 @@ export default function Form({ name, transData }) {
     currency_id: "",
     transaction_type_id: "",
   });
-
+  let [updateTransactionData, setUpdatedTransactionData] = useState({
+    title: "",
+    description: "",
+    amount: "",
+    date: "",
+    mode_of_payment: "",
+    essential: "",
+    category_id: "",
+    currency_id: "",
+    transaction_type_id: "",
+  });
   let [error, setError] = useState(false);
   let [success, setSuccess] = useState(false);
   let [message, setMessage] = useState("");
@@ -71,7 +81,7 @@ export default function Form({ name, transData }) {
     // so it got spread as name="", email="", password="" single variable and not an array
 
     // [id]:value => this takes value from e.target.value and put it into e.target.id for every entity in prevState object
-    setTransactionData((prevState) => ({
+    setUpdatedTransactionData((prevState) => ({
       ...prevState,
       [id]: value,
     }));
@@ -80,7 +90,7 @@ export default function Form({ name, transData }) {
     if (name === "Update") {
       setTransactionData(transData);
     }
-  }, []);
+  });
   const resetData = () => {
     setTransactionData({
       title: "",
@@ -162,19 +172,29 @@ export default function Form({ name, transData }) {
       setMessage("");
       transactionData.user_id = localStorage.getItem("userid");
       let result = await addTrasaction(transactionData);
-      console.log("result transa add", result);
+      console.log("Transaction Added Succesfully!", result);
 
-      if (result && result.success !== 1) {
-        setError(true);
-        setMessage("transaction failed Falied");
-        return;
-      }
-      if (result && result.success === 1) {
-        console.log("lol:", result.data);
-        resetData();
+      if (result && result.status === 200 && result.data.success === 1) {
         setError(false);
         setSuccess(true);
-        setMessage("Transaction Added Succesfully!");
+
+        setMessage(`Transaction ${name}ed Succesfully!`);
+        return;
+      }
+      if (result && result.status === 400 && result.data.success !== 1) {
+        console.log("lol:", result.data);
+        resetData();
+        setError(true);
+        setSuccess(false);
+        setMessage("Transaction Failed");
+        return;
+      }
+      if (result && result.status === 500 && result.data.success !== 1) {
+        console.log("lol:", result.data);
+        resetData();
+        setError(true);
+        setSuccess(false);
+        setMessage("Server Error");
         return;
       }
     } catch (err) {
@@ -195,7 +215,7 @@ export default function Form({ name, transData }) {
           <div></div>
         )}
         {success === true ? (
-          <Alert severity="info">{message}</Alert>
+          <Alert severity="success">{message}</Alert>
         ) : (
           <div></div>
         )}

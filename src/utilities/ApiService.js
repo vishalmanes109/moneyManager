@@ -34,8 +34,9 @@ const getRecentTransaction = async (userId) => {
     });
 
     recentTransactionData = response.data.result;
+    console.log("recentTransactionData api", recentTransactionData);
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
   return recentTransactionData;
 };
@@ -113,19 +114,20 @@ const getTransactionByAttribute = async (attribute, value) => {
 const getTransactionById = async (transactionId) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
-  let response;
+  let response, result;
   try {
     let url = baseUrl + `transaction/id/${transactionId}`;
-    // console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    result = await response.data.result[0];
+    // console.log(result);
   } catch (error) {
     console.log(error);
-    response.error = true;
-    return response;
+    result.error = true;
+    return result;
   }
-  return response;
+  return result;
 };
 
 // ---------------------------------Stats Service -------------------------------------------
@@ -192,7 +194,8 @@ const userLogin = async (userData) => {
 
     console.log("registrationResult:", loginResult.data.token);
   } catch (error) {
-    console.error("error:", error);
+    console.log("error logging:", error);
+    if (error === "Error: Network Error") console.log("net err conta");
   }
   return loginResult;
 };
