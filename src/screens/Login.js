@@ -124,12 +124,24 @@ export default function Login() {
       setError(false);
       setErrorMessage("");
       let loginResult = await userLogin(loginData);
-      if (loginResult.status !== 200) {
+      console.log("loginResult", loginResult);
+      // if login result is an empty object . so it is due to network error / server error
+      if (
+        loginResult &&
+        Object.keys(loginResult).length === 0 &&
+        loginResult.constructor === Object
+      ) {
+        setError(true);
+        setErrorMessage("Server Error, Please Trya again later");
+        return;
+      }
+      if (loginResult && loginResult.status !== 200) {
         setError(true);
         setErrorMessage("Username / Password is incorrect");
         return;
       }
-      if (loginResult.data.success === 1) {
+
+      if (loginResult & (loginResult.data.success === 1)) {
         console.log("lol:", loginResult.data);
         setLoginData({
           name: "",
@@ -143,6 +155,7 @@ export default function Login() {
           setRedirect(true);
           localStorage.setItem("isLoggedIn", true);
           localStorage.setItem("userName", loginData.name);
+          localStorage.setItem("userid", loginData.userid);
           localStorage.setItem("token", loginResult.data.token);
         }, 3000);
         return;

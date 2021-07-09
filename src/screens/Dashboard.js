@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
   const theme = useTheme();
-  let userId = 1;
+  let userId = localStorage.getItem("userid");
   let [netTransactiondata, setNetTransactiondata] = useState([]);
   let [recentTransactionData, setRecentTransactionData] = useState([]);
   const [error, setError] = useState(false);
@@ -41,6 +41,7 @@ const Dashboard = () => {
         let result = await getTotalTransactionForMonth(userId);
 
         console.log(" getTotalTransactionForMonth result: ", result);
+        // if server error then result is empty object
         if (
           result &&
           Object.keys(result).length === 0 &&
@@ -55,11 +56,19 @@ const Dashboard = () => {
         setNetTransactiondata(result);
 
         let recentDataResult = await getRecentTransaction(userId);
+        if (
+          recentDataResult &&
+          Object.keys(recentDataResult).length === 0 &&
+          recentDataResult.constructor === Object
+        ) {
+          // if result is empty
+          setError(true);
+          setLoading(false);
+        }
         setRecentTransactionData(recentDataResult);
         console.log("after set: ", recentDataResult);
       } catch (err) {
         console.log("err: lol", err);
-
         setError(true);
         setLoading(false);
       }

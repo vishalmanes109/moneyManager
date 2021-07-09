@@ -161,12 +161,22 @@ export default function SignUp() {
       setError(false);
       setErrorMessage("");
       let registrationResult = await userRegistration(registerData);
-      if (registrationResult.status !== 200) {
+      // if login result is an empty object . so it is due to network error / server error
+      if (
+        registrationResult &&
+        Object.keys(registrationResult).length === 0 &&
+        registrationResult.constructor === Object
+      ) {
+        setError(true);
+        setErrorMessage("Server Error, Please Trya again later");
+        return;
+      }
+      if (registrationResult && registrationResult.status !== 200) {
         setError(true);
         setErrorMessage("Registration Falied");
         return;
       }
-      if (registrationResult.data.success === 1) {
+      if (registrationResult && registrationResult.data.success === 1) {
         console.log("lol:", registrationResult.data);
         setRegisterData({
           name: "",
@@ -307,7 +317,7 @@ export default function SignUp() {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
