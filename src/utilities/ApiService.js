@@ -74,16 +74,19 @@ const deleteTransaction = async (transactionId) => {
   }
   return response;
 };
-const updateTrasaction = async (transactionData) => {
+const updateTransaction = async (transactionData, attribute) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let response;
   try {
     let url = baseUrl + "transaction";
-    // console.log(url);
-    response = await axios.patch(url, transactionData, {
+    let updateData = transactionData;
+    updateData.attribute = attribute;
+    console.log(updateData);
+    response = await axios.patch(url, updateData, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log("response:", response);
   } catch (error) {
     console.log(error);
     response.error = true;
@@ -215,10 +218,30 @@ const isUserNameAvailable = async (userName) => {
   }
   return result;
 };
+
+const getSetting = async (userId) => {
+  let baseUrl = `http://localhost:3001/`;
+  let token = localStorage.getItem("token");
+  let response, result;
+  try {
+    let url = baseUrl + `user/id/${userId}`;
+    response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    result = await response.data.result[0];
+    // console.log(result);
+  } catch (error) {
+    console.log(error);
+    result.error = true;
+    return result;
+  }
+  return result;
+};
+
 export {
   getTotalTransactionForMonth,
   addTrasaction,
-  updateTrasaction,
+  updateTransaction,
   deleteTransaction,
   getTransactionById,
   getTransactionByAttribute,
@@ -226,6 +249,7 @@ export {
   isUserNameAvailable,
   getRecentTransaction,
   userLogin,
+  getSetting,
   getChartData,
   getAllChartData,
 };

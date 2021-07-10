@@ -15,26 +15,6 @@ export default function UpdateTransaction({ transId }) {
     transaction_type_id: "1",
   };
   let id = "CEG9r0tuuQ";
-  let [transData, setTransData] = useState({});
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        let result = await getTransactionById(id);
-        let dd = result.date.substring(8, 10);
-        let mm = result.date.substring(5, 7);
-        let yyyy = result.date.substring(0, 4);
-
-        let todayDate = mm + "/" + dd + "/" + yyyy;
-        result.date = yyyy + "-" + mm + "-" + dd;
-
-        setTransData(result);
-        console.log("after set: ", result);
-      } catch (error) {
-        console.log("err: ", error);
-      }
-    }
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -42,7 +22,7 @@ export default function UpdateTransaction({ transId }) {
       <MiniDrawer
         props={
           <>
-            <Form name="Update" transData={transData}></Form>
+            <Form name="Update" transid={id}></Form>
           </>
         }
       ></MiniDrawer>
