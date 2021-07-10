@@ -122,12 +122,7 @@ export default function SignUp() {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (agree.checked === false) {
-      setError(true);
-      setErrorMessage("Please Agree To Terms & Privacy Policy");
 
-      return;
-    }
     let { name, email, password, confirmPassword } = registerData;
     if (!isValidString(name)) {
       setError(true);
@@ -150,10 +145,14 @@ export default function SignUp() {
       return;
     }
     if (password !== confirmPassword) {
-      console.log(password);
-      console.log(confirmPassword);
       setError(true);
       setErrorMessage("Password & Confirm Password Does Not Match");
+      return;
+    }
+    if (agree.checked === false) {
+      setError(true);
+      setErrorMessage("Please Agree To Terms & Privacy Policy");
+
       return;
     }
 
@@ -168,7 +167,7 @@ export default function SignUp() {
         registrationResult.constructor === Object
       ) {
         setError(true);
-        setErrorMessage("Server Error, Please Trya again later");
+        setErrorMessage("Server Error, Please Try again later");
         return;
       }
       if (registrationResult && registrationResult.status !== 200) {
@@ -202,6 +201,11 @@ export default function SignUp() {
       setError(true);
       setErrorMessage("error");
     }
+  };
+
+  const focus = () => {
+    setError(false);
+    setErrorMessage("");
   };
 
   const classes = useStyles();
@@ -245,6 +249,8 @@ export default function SignUp() {
                   autoFocus
                   onChange={HandleInput}
                   onBlur={isUsernameAvailable}
+                  onFocus={focus}
+                  onFocus={focus}
                 />
               </Grid>
 
@@ -260,6 +266,7 @@ export default function SignUp() {
                   autoComplete="email"
                   onChange={HandleInput}
                   onBlur={validateEmail}
+                  onFocus={focus}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -275,6 +282,7 @@ export default function SignUp() {
                   autoComplete="current-password"
                   onChange={HandleInput}
                   onBlur={validatePassword}
+                  onFocus={focus}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -289,6 +297,7 @@ export default function SignUp() {
                   value={registerData.confirmPassword}
                   autoComplete="current-password"
                   onChange={HandleInput}
+                  onFocus={focus}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -299,6 +308,7 @@ export default function SignUp() {
                       defaultChecked={agree.checked}
                       onChange={(e) => setAgree({ checked: e.target.checked })}
                       color="primary"
+                      onFocus={focus}
                     />
                   }
                   label="I accept terms and privacy policy"
@@ -312,6 +322,7 @@ export default function SignUp() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onFocus={focus}
             >
               Sign Up
             </Button>

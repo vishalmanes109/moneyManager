@@ -168,6 +168,10 @@ export default function Login() {
       setErrorMessage("error");
     }
   };
+  const focus = () => {
+    setError(false);
+    setErrorMessage("");
+  };
   const logincomponent = (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -207,6 +211,7 @@ export default function Login() {
               autoFocus
               onChange={handleInput}
               onBlur={validateUserName}
+              onFocus={focus}
             />
             <TextField
               variant="outlined"
@@ -220,6 +225,7 @@ export default function Login() {
               value={loginData.password}
               autoComplete="current-password"
               onChange={handleInput}
+              onFocus={focus}
               onBlur={validatePassword}
             />
             <Button
@@ -228,6 +234,7 @@ export default function Login() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onFocus={focus}
             >
               Sign In
             </Button>
