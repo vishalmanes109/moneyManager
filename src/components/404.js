@@ -1,6 +1,4 @@
 import React from "react";
-import { getTotalTransactionForMonth } from "../utilities/ApiService";
-import Nav from "./Nav";
 import "./notfound.css";
 export default function Notfound() {
   return (

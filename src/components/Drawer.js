@@ -164,20 +164,9 @@ export default function MiniDrawer({ props }) {
             </IconButton>
           </div>
           <Divider />
-          {/* <List>
-            {icon.map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  <text></text>
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List> */}
           <List>
-            <Link style={{ textDecoration: "none" }} to="register">
+            <Link style={{ textDecoration: "none" }} to="profile">
               <ListItem button key={"Profile"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <AccountBoxIcon />
                 </ListItemIcon>
@@ -186,7 +175,6 @@ export default function MiniDrawer({ props }) {
             </Link>
             <Link style={{ textDecoration: "none" }} to="dashboard">
               <ListItem button key={"DashBoard"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -195,7 +183,6 @@ export default function MiniDrawer({ props }) {
             </Link>
             <Link style={{ textDecoration: "none" }} to="stats">
               <ListItem button key={"Stats"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <PollIcon />
                 </ListItemIcon>
@@ -204,7 +191,6 @@ export default function MiniDrawer({ props }) {
             </Link>
             <Link style={{ textDecoration: "none" }} to="add_transaction">
               <ListItem button key={"Add Transaction"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <PostAddIcon />
                 </ListItemIcon>
@@ -213,7 +199,6 @@ export default function MiniDrawer({ props }) {
             </Link>
             <Link style={{ textDecoration: "none" }} to="search">
               <ListItem button key={"Search Transactions"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <FindInPageIcon />
                 </ListItemIcon>
@@ -222,7 +207,6 @@ export default function MiniDrawer({ props }) {
             </Link>
             <Link style={{ textDecoration: "none" }} to="setting">
               <ListItem button key={"Setting"}>
-                {/* <a href="google.com"> </a> */}
                 <ListItemIcon>
                   <SettingsApplicationsIcon />
                 </ListItemIcon>

@@ -141,8 +141,14 @@ export default function UserForm() {
 
     isValide = validateData();
     // console.log(isValide);
-    if (isValide === false) return;
-    if (!selectedValue) return;
+    if (isValide === false) {
+      return;
+    }
+    if (!selectedValue && selectedAttribute) {
+      setError(true);
+      setMessage("Please enter/select value to search");
+      return;
+    }
     try {
       setError(false);
       setMessage("");
@@ -187,7 +193,7 @@ export default function UserForm() {
     } catch (err) {
       // console.log(err);
       setError(true);
-      setMessage("Error! please try again");
+      setMessage("Server Error! Please try again");
       setResultArray([]);
     }
   };
@@ -322,102 +328,99 @@ export default function UserForm() {
     );
   }
 
-  return (
-    <MiniDrawer
-      props={
-        <div className={classes.container}>
-          <div className={classes.header}>
-            <h2>Search Transactions</h2>
+  let SearchFormComponent = (
+    <div className={classes.container}>
+      <div className={classes.header}>
+        <h2>Search Transactions</h2>
 
-            {isAuth === false ? <Redirect to="/login" /> : <div></div>}
-            <FormControl component="fieldset">
-              <RadioGroup
-                row
-                id="selectedAttribute"
-                aria-label="position"
-                name="position"
-                onClick={handleSelect}
-              >
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="title"
-                  control={<Radio color="primary" />}
-                  label="Title"
-                />
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="description"
-                  control={<Radio color="primary" />}
-                  label="Description"
-                />
-
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="transaction_type_id"
-                  control={<Radio color="primary" />}
-                  label="Transaction type"
-                />
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="period"
-                  control={<Radio color="primary" />}
-                  label="Time Period"
-                />
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="essential"
-                  control={<Radio color="primary" />}
-                  label="Essential"
-                />
-                <FormControlLabel
-                  id="selectedAttribute"
-                  value="category_id"
-                  control={<Radio color="primary" />}
-                  label="Category "
-                />
-              </RadioGroup>
-            </FormControl>
-            {error === true ? (
-              <Alert severity="error">{message}</Alert>
-            ) : (
-              <div></div>
-            )}
-          </div>
-          <form
-            onSubmit={submit}
-            className={classes.root}
-            noValidate
-            autoComplete="off"
+        {isAuth === false ? <Redirect to="/login" /> : <div></div>}
+        <FormControl component="fieldset">
+          <RadioGroup
+            row
+            id="selectedAttribute"
+            aria-label="position"
+            name="position"
+            onClick={handleSelect}
           >
-            <h3>Search By:</h3>
+            <FormControlLabel
+              id="selectedAttribute"
+              value="title"
+              control={<Radio color="primary" />}
+              label="Title"
+            />
+            <FormControlLabel
+              id="selectedAttribute"
+              value="description"
+              control={<Radio color="primary" />}
+              label="Description"
+            />
 
-            <Grid className={classes.form} container spacing={3}>
-              {searchBlock}
-            </Grid>
-            <br></br>
-            <Button
-              onClick={submit}
-              type="submit"
-              color="primary"
-              fullWidth
-              variant="outlined"
-              className={classes.submit}
-            >
-              Search
-              <SearchOutlinedIcon />
-            </Button>
-          </form>
-          <div>
-            {!resultArray && resultArray.length < 0 ? (
-              <div>No result to display</div>
-            ) : (
-              resultArray.map((user) => (
-                <TransactionMeta key={user.id} user={user}></TransactionMeta>
-              ))
-            )}
-          </div>
-        </div>
-      }
-    ></MiniDrawer>
+            <FormControlLabel
+              id="selectedAttribute"
+              value="transaction_type_id"
+              control={<Radio color="primary" />}
+              label="Transaction type"
+            />
+            <FormControlLabel
+              id="selectedAttribute"
+              value="period"
+              control={<Radio color="primary" />}
+              label="Time Period"
+            />
+            <FormControlLabel
+              id="selectedAttribute"
+              value="essential"
+              control={<Radio color="primary" />}
+              label="Essential"
+            />
+            <FormControlLabel
+              id="selectedAttribute"
+              value="category_id"
+              control={<Radio color="primary" />}
+              label="Category "
+            />
+          </RadioGroup>
+        </FormControl>
+        {error === true ? (
+          <Alert severity="error">{message}</Alert>
+        ) : (
+          <div></div>
+        )}
+      </div>
+      <form
+        onSubmit={submit}
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+      >
+        <h3>Search By:</h3>
+
+        <Grid className={classes.form} container spacing={3}>
+          {searchBlock}
+        </Grid>
+        <br></br>
+        <Button
+          onClick={submit}
+          type="submit"
+          color="primary"
+          fullWidth
+          variant="outlined"
+          className={classes.submit}
+        >
+          Search
+          <SearchOutlinedIcon />
+        </Button>
+      </form>
+      <div>
+        {!resultArray && resultArray.length < 0 ? (
+          <div>No result to display</div>
+        ) : (
+          resultArray.map((user) => (
+            <TransactionMeta key={user.id} user={user}></TransactionMeta>
+          ))
+        )}
+      </div>
+    </div>
   );
+  return <MiniDrawer props={SearchFormComponent}></MiniDrawer>;
 }

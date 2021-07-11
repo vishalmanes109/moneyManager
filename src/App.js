@@ -15,6 +15,7 @@ import TransactionForm from "./components/TransactionForm";
 import SearchTransactions from "./screens/SearchTransaction";
 import TransactionCard from "./components/TransactionCard";
 import Setting from "./screens/setting";
+import Profile from "./screens/Profile";
 function App() {
   return (
     <Router>
@@ -30,6 +31,7 @@ function App() {
             <Route path="/search" component={SearchTransactions}></Route>
             <Route path="/add_transaction" component={AddTrasaction}></Route>
             <Route path="/setting" component={Setting}></Route>
+            <Route path="/profile" component={Profile}></Route>
             <Route
               path="/update_transaction"
               component={UpdateTransaction}
