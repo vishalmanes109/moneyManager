@@ -19,14 +19,11 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     maxWidth: "400px",
-
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   info: {
-    padding: "0.5em",
-    margin: "1em",
     display: "flex",
     flexDirection: "column",
   },
@@ -39,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
 }));
-
 let DashboardLoader = () => {
   const classes = useStyles();
   return (
@@ -151,50 +147,38 @@ let FormLoader = () => {
     </div>
   );
 };
-let ProfileComponent = () => {
-  let classes = makeStyles();
+let ProfileLoader = () => {
+  let classes = useStyles();
   return (
     <>
       <Grid container spacing={3}>
         {" "}
         <Grid item xs={12} sm={3}>
           <Paper className={classes.paper} elevation={3}>
-            <div className={classes.avatar}></div>
+            <div className={classes.avatar}> </div>
             <div className={classes.info}>
-              <div>Email:Vishal Mane</div>
-              <div>Account created on :7/10/2021</div>
-              <div>Name:Vishal Mane</div>
-              <div>Currency:RS</div>
-              <div>Theme:Default</div>
-              <div className={classes.button}>
-                <Button
-                  className={classes.button}
-                  variant="outlined"
-                  color="primary"
-                >
-                  Edit
-                </Button>
-                <Button
-                  className={classes.button}
-                  variant="outlined"
-                  color="secondary"
-                >
-                  Delete
-                </Button>
-              </div>
+              {Array.from(new Array(7)).map((item, index) => (
+                <Skeleton
+                  variant="text"
+                  width="280px"
+                  height="20px"
+                  animation="wave"
+                />
+              ))}
             </div>
           </Paper>
 
           <br></br>
           <Paper className={classes.paper} elevation={3}>
             <div className={classes.info}>
-              <div>Total Transactions:0</div>
-              <div>Avg Earning per month :2000</div>
-              <div>Avg Expense per month :2000</div>
-              <div>Avg saving per month :2000</div>
-              <div>Name:Vishal Mane</div>
-              <div>Currency:RS</div>
-              <div>Theme:Default</div>
+              {Array.from(new Array(7)).map((item, index) => (
+                <Skeleton
+                  variant="text"
+                  width="280px"
+                  height="20px"
+                  animation="wave"
+                />
+              ))}
             </div>
           </Paper>
         </Grid>
@@ -219,4 +203,4 @@ let ProfileComponent = () => {
   );
 };
 
-export { DashboardLoader, StatsLoader, FormLoader, ProfileComponent };
+export { DashboardLoader, StatsLoader, FormLoader, ProfileLoader };
