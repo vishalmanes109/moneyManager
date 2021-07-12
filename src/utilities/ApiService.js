@@ -99,15 +99,43 @@ const getTransactionByAttribute = async (attribute, value) => {
   console.log(attribute, value);
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
+  let userId = localStorage.getItem("userid");
   let response;
+  let url;
   try {
-    let url = baseUrl + `transaction?attribute=${attribute}&value=${value}`;
+    url =
+      baseUrl +
+      `transaction?id=${userId}&attribute=${attribute}&value=${value}`;
     // console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log(response);
   } catch (error) {
     console.log(error);
+
+    response.error = true;
+    return response;
+  }
+  return response;
+};
+const getTransactionByPeriod = async (start, end) => {
+  console.log(start, end);
+  let baseUrl = `http://localhost:3002/`;
+  let token = localStorage.getItem("token");
+  let userId = localStorage.getItem("userid");
+  let response;
+  let url;
+  try {
+    url = baseUrl + `transaction?id=${userId}&start=${start}&end=${end}`;
+
+    response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+
     response.error = true;
     return response;
   }
@@ -245,6 +273,7 @@ export {
   deleteTransaction,
   getTransactionById,
   getTransactionByAttribute,
+  getTransactionByPeriod,
   userRegistration,
   isUserNameAvailable,
   getRecentTransaction,

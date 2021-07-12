@@ -136,12 +136,13 @@ export default function UserForm() {
     let isValide = true;
     e.preventDefault();
     // console.log(searchData);
-    console.log("selectedAttribute: ", selectedAttribute);
+    // console.log("selectedAttribute: ", selectedAttribute);
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
     // console.log(isValide);
     if (isValide === false) {
+      console.log("invalide");
       return;
     }
     if (!selectedValue && selectedAttribute) {
@@ -158,7 +159,7 @@ export default function UserForm() {
         selectedAttribute,
         selectedValue
       );
-      // // console.log("result :,", result);
+      console.log("result :,", result.data.result);
       if (result && result.unauthorized) {
         setError(true);
         setMessage(result.message);
@@ -181,9 +182,9 @@ export default function UserForm() {
         setResultArray([]);
         return;
       }
-      if (result && result.success === 1) {
+      if (result && result.status === 200 && result.data.success === 1) {
         // console.log(" success Result 1:", result);
-        setResultArray(result.data);
+        setResultArray(result.data.result);
         resetData();
         setError(false);
         setMessage("");
@@ -191,7 +192,7 @@ export default function UserForm() {
         return;
       }
     } catch (err) {
-      // console.log(err);
+      console.log(err);
       setError(true);
       setMessage("Server Error! Please try again");
       setResultArray([]);
@@ -415,8 +416,11 @@ export default function UserForm() {
         {!resultArray && resultArray.length < 0 ? (
           <div>No result to display</div>
         ) : (
-          resultArray.map((user) => (
-            <TransactionMeta key={user.id} user={user}></TransactionMeta>
+          resultArray.map((transactionData) => (
+            <TransactionMeta
+              key={transactionData.id}
+              transactionData={transactionData}
+            ></TransactionMeta>
           ))
         )}
       </div>

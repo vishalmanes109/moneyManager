@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -66,24 +64,24 @@ export default function TransactionMeta({ transactionData }) {
       ) : (
         <div className={classes.listItem}>
           <div className={classes.item}>
-            <h4 className={classes.item}>Personal No </h4>
-            <div className={classes.item}>{1}</div>
+            <h4 className={classes.item}>Title </h4>
+            <div className={classes.item}>{transactionData.title}</div>
           </div>
           <div className={classes.item}>
-            <h4 className={classes.item}>Name: </h4>
-            <div className={classes.item}>{}</div>
+            <h4 className={classes.item}>Description </h4>
+            <div className={classes.item}>{transactionData.description}</div>
           </div>
           <div className={classes.item}>
-            <h4 className={classes.item}>Address: </h4>
-            <div className={classes.item}>{1}</div>
+            <h4 className={classes.item}>Mode of Payment: </h4>
+            <div className={classes.item}>
+              {transactionData.mode_of_payment}
+            </div>
           </div>
           <div className={classes.item}>
-            <h4 className={classes.item}>DOB: </h4>
-            <div className={classes.item}>{1}</div>
-          </div>
-          <div className={classes.item}>
-            <h4 className={classes.item}>Contact No: </h4>
-            <div className={classes.item}>{1}</div>
+            <h4 className={classes.item}>transaction Type: </h4>
+            <div className={classes.item}>
+              {transactionData.transaction_type_id}
+            </div>
           </div>
           <div className={classes.buttons}>
             <Button
@@ -91,20 +89,16 @@ export default function TransactionMeta({ transactionData }) {
               color="primary"
               className={classes.button}
               onClick={openCardMode}
-              endIcon={<Icon>more</Icon>}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.button}
             >
               More
             </Button>
-            <a href={call}>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                endIcon={<Icon>call</Icon>}
-              >
-                Call
-              </Button>
-            </a>
           </div>
         </div>
       )}
