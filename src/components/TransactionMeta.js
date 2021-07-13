@@ -37,15 +37,15 @@ const useStyles = makeStyles((theme) => ({
     display: "inline",
   },
   button: {
-    margin: "2px",
+    margin: "10px",
+    display: "flex",
+    flexDirection: "row",
   },
 }));
 
 export default function TransactionMeta({ transactionData }) {
   const classes = useStyles();
   let [isMore, setIsMore] = useState(false);
-  let call = "tel:";
-
   //console.log("user from meta:", user.name);
   const openCardMode = () => {
     setIsMore(true);
@@ -57,7 +57,7 @@ export default function TransactionMeta({ transactionData }) {
         <Redirect
           user={transactionData}
           to={{
-            pathname: "/userdetail",
+            pathname: "/transcard",
             state: { transactionData: transactionData },
           }}
         ></Redirect>
@@ -79,25 +79,18 @@ export default function TransactionMeta({ transactionData }) {
           </div>
           <div className={classes.item}>
             <h4 className={classes.item}>transaction Type: </h4>
-            <div className={classes.item}>
-              {transactionData.transaction_type_id}
-            </div>
+            <div className={classes.item}>{transactionData.type}</div>
+          </div>
+          <div className={classes.item}>
+            <h4 className={classes.item}>Category: </h4>
+            <div className={classes.item}>{transactionData.name}</div>
           </div>
           <div className={classes.buttons}>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-              onClick={openCardMode}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-            >
+            <Button variant="outlined" color="primary" onClick={openCardMode}>
               More
+            </Button>
+            <Button variant="outlined" color="secondary">
+              Delete
             </Button>
           </div>
         </div>

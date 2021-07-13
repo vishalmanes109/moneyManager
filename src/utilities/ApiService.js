@@ -100,7 +100,7 @@ const getTransactionByAttribute = async (attribute, value) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let userId = localStorage.getItem("userid");
-  let response;
+  let response = {};
   let url;
   try {
     url =
@@ -112,9 +112,17 @@ const getTransactionByAttribute = async (attribute, value) => {
     });
     console.log(response);
   } catch (error) {
-    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
 
-    response.error = true;
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
+
     return response;
   }
   return response;
@@ -124,19 +132,26 @@ const getTransactionByPeriod = async (start, end) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let userId = localStorage.getItem("userid");
-  let response;
+  let response = {};
   let url;
   try {
-    url = baseUrl + `transaction?id=${userId}&start=${start}&end=${end}`;
-
+    url = baseUrl + `transaction/period?id=${userId}&start=${start}&end=${end}`;
+    console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
     console.log(response);
   } catch (error) {
     console.log(error);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
 
-    response.error = true;
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
     return response;
   }
   return response;

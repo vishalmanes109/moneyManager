@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransactionCard() {
+export default function TransactionCard({ transactionDatar }) {
   const classes = useStyles();
   let transactionData = {};
   let [isEdit, setIsEdit] = useState(false);

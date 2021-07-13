@@ -12,9 +12,12 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import { Redirect } from "react-router-dom";
-import TransactionMeta from "../components/TrsanactionMeta";
+import TransactionMeta from "../components/TransactionMeta";
 import MiniDrawer from "../components/Drawer";
-import { getTransactionByAttribute } from "../utilities/ApiService";
+import {
+  getTransactionByAttribute,
+  getTransactionByPeriod,
+} from "../utilities/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +72,11 @@ export default function UserForm() {
   let [error, setError] = useState(false);
   let [isAuth, setIsAuth] = useState(true);
   let [message, setMessage] = useState("");
+  let [info, setInfo] = useState(false);
   const handleInput = (e) => {
+    setError(false);
+    setInfo(false);
+    setResultArray([]);
     const { id, value } = e.target;
     // ...prevState means it takes prev object and spreads it value .... eg. initial time prevSate object id {name: "",email:"",password:"" }
     // so it got spread as name="", email="", password="" single variable and not an array
@@ -82,6 +89,9 @@ export default function UserForm() {
     setselectedValue(value);
   };
   const handleSelect = (e) => {
+    setError(false);
+    setInfo(false);
+    setResultArray([]);
     setSelectedAttribute(e.target.value);
   };
   const resetData = () => {
@@ -133,6 +143,9 @@ export default function UserForm() {
     return true;
   };
   const submit = async (e) => {
+    setError(false);
+    setInfo(false);
+    setMessage("");
     let isValide = true;
     e.preventDefault();
     // console.log(searchData);
@@ -155,30 +168,45 @@ export default function UserForm() {
       setMessage("");
       // console.log(searchData);
       // let result = 10;
-      let result = await getTransactionByAttribute(
-        selectedAttribute,
-        selectedValue
-      );
-      console.log("result :,", result.data.result);
-      if (result && result.unauthorized) {
+      let result = {};
+
+      if (selectedAttribute === "period") {
+        if (!searchData.startDate || !searchData.endDate) {
+          setError(true);
+          setMessage("Invalid date, Please enter date agin! ");
+          return;
+        }
+        result = await getTransactionByPeriod(
+          searchData.startDate,
+          searchData.endDate
+        );
+      } else {
+        result = await getTransactionByAttribute(
+          selectedAttribute,
+          selectedValue
+        );
+      }
+      console.log("result :,", result);
+      if (result && result.status === 401) {
         setError(true);
-        setMessage(result.message);
+        setMessage("Unauthorized Request, Login Again");
         setResultArray([]);
         setTimeout(() => {
           setIsAuth(false);
         }, 3000);
       }
-      if (result && result.success === 0) {
+      if (result && result.status === 400) {
         // console.log(" success 0 Result:", result);
-        setError(true);
-        setMessage(result.message);
+        setError(false);
+        setInfo(true);
+        setMessage("0 Transaction Found");
         setResultArray([]);
         return;
       }
-      if (result && result.err) {
+      if (result && result.status === 500) {
         setError(true);
         // console.log(" err Result:", result);
-        setMessage("server error");
+        setMessage("Server Error");
         setResultArray([]);
         return;
       }
@@ -186,8 +214,9 @@ export default function UserForm() {
         // console.log(" success Result 1:", result);
         setResultArray(result.data.result);
         resetData();
+        setInfo(true);
         setError(false);
-        setMessage("");
+        setMessage(result.data.result.length + " Transactions Found");
         // console.log("resultArray:", resultArray);
         return;
       }
@@ -290,9 +319,9 @@ export default function UserForm() {
             onChange={handleInput}
           >
             <option aria-label="None" value="" />
-            <option value={"yes"}>Yes</option>
-            <option value={"no"}>No</option>
-            <option value={"maybe"}>Maybe</option>
+            <option value={1}>Yes</option>
+            <option value={0}>No</option>
+            <option value={2}>Maybe</option>
           </Select>
         </FormControl>
       </Grid>
@@ -412,6 +441,14 @@ export default function UserForm() {
           <SearchOutlinedIcon />
         </Button>
       </form>
+      {info ? (
+        <>
+          {" "}
+          <Alert severity="info">{message}</Alert>
+        </>
+      ) : (
+        <></>
+      )}{" "}
       <div>
         {!resultArray && resultArray.length < 0 ? (
           <div>No result to display</div>
