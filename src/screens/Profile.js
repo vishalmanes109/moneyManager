@@ -3,9 +3,10 @@ import MiniDrawer from "../components/Drawer";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core";
+import { Avatar, Grid } from "@material-ui/core";
 import { TransactionMeta, RecentMeta } from "../components/Cards";
 import { DashboardLoader, ProfileLoader } from "../components/LoadingComponent";
+import imgAv from "../1.png";
 import {
   getRecentTransaction,
   getTotalTransactionForMonth,
@@ -109,7 +110,7 @@ export default function Profile() {
             {" "}
             <Grid item xs={12} sm={3}>
               <Paper className={classes.paper} elevation={3}>
-                <div className={classes.avatar}></div>
+                <img className={classes.avatar} alt="Profile" src={imgAv} />
                 <div className={classes.info}>
                   <div>Email:Vishal Mane</div>
                   <div>Account created on :7/10/2021</div>
