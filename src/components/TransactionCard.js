@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import MiniDrawer from "../components/Drawer";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 // import "./UserCard.css";
+import { deleteTransaction } from "../utilities/ApiService";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -57,12 +58,68 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransactionCard({ transactionDatar }) {
+export default function TransactionCard(props) {
   const classes = useStyles();
-  let transactionData = {};
   let [isEdit, setIsEdit] = useState(false);
+  let history = useHistory();
+  let [error, setError] = useState(false);
+  let [message, setMessage] = useState("");
+  let [info, setInfo] = useState(false);
+  let transactionData = props.location.state.transactionData;
+
+  console.log("locatindhda ", props.location.state.transactionData);
   const edit = () => {
-    setIsEdit(true);
+    // setIsEdit(true);
+    console.log(transactionData.id);
+    history.push({
+      pathname: "/update_transaction",
+      state: { id: transactionData.id },
+    });
+  };
+  const deleteTransaData = () => {
+    async function deleteData() {
+      console.log(transactionData.id);
+      try {
+        let result = await deleteTransaction(transactionData.id);
+        console.log("result :,", result);
+        if (result && result.status === 401) {
+          setError(true);
+          setMessage("Unauthorized Request, Login Again");
+        }
+        if (result && result.status === 400) {
+          // console.log(" success 0 Result:", result);
+          setError(false);
+          setInfo(true);
+          setMessage("0 Transaction Found");
+          return;
+        }
+        if (result && result.status === 500) {
+          setError(true);
+          // console.log(" err Result:", result);
+          setMessage("Server Error");
+          return;
+        }
+        if (result && result.status === 200 && result.data.success === 1) {
+          // console.log(" success Result 1:", result);
+          setInfo(true);
+          setError(false);
+          setMessage("Transaction deleted succesfully");
+          // console.log("resultArray:", resultArray);
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+        setError(true);
+        setMessage("Server Error! Please try again");
+      }
+    }
+    deleteData();
+
+    // setIsEdit(true);
+    // history.push({
+    //   pathname: "/update_transaction",
+    //   state: { id: transactionData.id },
+    // });
   };
   let cardData = (
     <>
@@ -106,14 +163,12 @@ export default function TransactionCard({ transactionDatar }) {
               <br />
               <div className={classes.attribute}>
                 <span>Transaction Type:</span>
-                <span className={classes.data}>
-                  {transactionData.transaction_type}
-                </span>
+                <span className={classes.data}>{transactionData.type}</span>
               </div>
               <br />
               <div className={classes.attribute}>
                 <span>Category:</span>
-                <span className={classes.data}>{transactionData.category}</span>
+                <span className={classes.data}>{transactionData.name}</span>
               </div>
               <br />
               <br />
@@ -133,6 +188,7 @@ export default function TransactionCard({ transactionDatar }) {
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
+                onClick={deleteTransaData}
                 endIcon={<DeleteForeverIcon></DeleteForeverIcon>}
               >
                 Delete
@@ -143,6 +199,5 @@ export default function TransactionCard({ transactionDatar }) {
       </div>
     </>
   );
-
   return <MiniDrawer props={cardData}></MiniDrawer>;
 }

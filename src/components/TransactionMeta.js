@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import { deleteTransaction } from "../utilities/ApiService";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -46,10 +48,66 @@ const useStyles = makeStyles((theme) => ({
 export default function TransactionMeta({ transactionData }) {
   const classes = useStyles();
   let [isMore, setIsMore] = useState(false);
+
+  let [isEdit, setIsEdit] = useState(false);
+  let [error, setError] = useState(false);
+  let [message, setMessage] = useState("");
+  let [info, setInfo] = useState(false);
+  let history = useHistory();
+
   //console.log("user from meta:", user.name);
   const openCardMode = () => {
-    setIsMore(true);
+    // setIsMore(true);
     //console.log(user);
+    history.push({
+      pathname: "/transcard",
+      state: { transactionData: transactionData },
+    });
+  };
+  const deleteTransaData = () => {
+    async function deleteData() {
+      console.log(transactionData.id);
+      try {
+        let result = await deleteTransaction(transactionData.id);
+        console.log("result :,", result);
+        if (result && result.status === 401) {
+          setError(true);
+          setMessage("Unauthorized Request, Login Again");
+        }
+        if (result && result.status === 400) {
+          // console.log(" success 0 Result:", result);
+          setError(false);
+          setInfo(true);
+          setMessage("0 Transaction Found");
+          return;
+        }
+        if (result && result.status === 500) {
+          setError(true);
+          // console.log(" err Result:", result);
+          setMessage("Server Error");
+          return;
+        }
+        if (result && result.status === 200 && result.data.success === 1) {
+          // console.log(" success Result 1:", result);
+          setInfo(true);
+          setError(false);
+          setMessage("Transaction deleted succesfully");
+          // console.log("resultArray:", resultArray);
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+        setError(true);
+        setMessage("Server Error! Please try again");
+      }
+    }
+    deleteData();
+
+    // setIsEdit(true);
+    // history.push({
+    //   pathname: "/update_transaction",
+    //   state: { id: transactionData.id },
+    // });
   };
   return (
     <div className={classes.container}>
@@ -89,7 +147,11 @@ export default function TransactionMeta({ transactionData }) {
             <Button variant="outlined" color="primary" onClick={openCardMode}>
               More
             </Button>
-            <Button variant="outlined" color="secondary">
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={deleteTransaData}
+            >
               Delete
             </Button>
           </div>
