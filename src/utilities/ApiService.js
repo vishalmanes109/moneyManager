@@ -16,7 +16,17 @@ const getTotalTransactionForMonth = async (userId) => {
     netTransactionData = response.data.result;
     console.log(netTransactionData);
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return netTransactionData;
 };
@@ -25,11 +35,11 @@ const getRecentTransaction = async (userId) => {
   let recentTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
-
+  let response = {};
   try {
     let url = baseUrl + "transaction/recent/" + userId;
     // console.log(url);
-    const response = await axios.get(url, {
+    response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -37,6 +47,16 @@ const getRecentTransaction = async (userId) => {
     console.log("recentTransactionData api", recentTransactionData);
   } catch (error) {
     console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return recentTransactionData;
 };
@@ -52,25 +72,43 @@ const addTrasaction = async (transactionData) => {
     });
   } catch (error) {
     console.log(error);
-    response.error = true;
-    return response;
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return response;
 };
 const deleteTransaction = async (transactionId) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
+  let userId = localStorage.getItem("userid");
   let response;
   try {
-    let url = baseUrl + `transaction/id${transactionId}`;
+    let url =
+      baseUrl + `transaction?transaction_id=${transactionId}&user_id=${userId}`;
     // console.log(url);
     response = await axios.delete(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
   } catch (error) {
     console.log(error);
-    response.error = true;
-    return response;
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return response;
 };
@@ -89,8 +127,16 @@ const updateTransaction = async (transactionData, attribute) => {
     console.log("response:", response);
   } catch (error) {
     console.log(error);
-    response.error = true;
-    return response;
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return response;
 };
@@ -170,8 +216,16 @@ const getTransactionById = async (transactionId) => {
     // console.log(result);
   } catch (error) {
     console.log(error);
-    result.error = true;
-    return result;
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return result;
 };
@@ -192,7 +246,17 @@ const getChartData = async (userId, chart, filter) => {
     chartData = response.data.result;
     // console.log(chartData);
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return chartData;
 };
@@ -213,16 +277,27 @@ const userRegistration = async (userData) => {
   // by default add currency as indian (5 is mapped to RS) theme to light user can change this from profile
   userData = { ...userData, avatar: "avatar", currency_id: 5, theme: "light" };
   // console.log(userData);
+  let response = {};
   let registrationResult = {};
   try {
     let url = baseUrl + "user";
-    const response = await axios.post(url, userData);
+    response = await axios.post(url, userData);
     console.log("response:", response);
     registrationResult = response;
 
     console.log("registrationResult:", registrationResult.status);
   } catch (error) {
-    console.error("error:", error);
+    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
   }
   return registrationResult;
 };
@@ -241,6 +316,7 @@ const userLogin = async (userData) => {
     console.log("registrationResult:", loginResult.data.token);
   } catch (error) {
     console.log("error logging:", error);
+
     if (error === "Error: Network Error") console.log("net err conta");
   }
   return loginResult;
