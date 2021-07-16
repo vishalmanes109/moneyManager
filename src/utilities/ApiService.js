@@ -6,10 +6,11 @@ const getTotalTransactionForMonth = async (userId) => {
   let netTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
+  let response = {};
   try {
     let url = baseUrl + "transaction/total/" + userId;
     // console.log(url);
-    const response = await axios.get(url, {
+    response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -235,12 +236,13 @@ const getChartData = async (userId, chart, filter) => {
   let chartData = {};
   let baseUrl = `http://localhost:3003/`;
   let token = localStorage.getItem("token");
+  let response = {};
 
   try {
     let url =
       baseUrl + `stats/chart?user_id=${userId}&chart=${chart}&filter=${filter}`;
     // console.log(url);
-    const response = await axios.get(url, {
+    response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
     chartData = response.data.result;
@@ -357,6 +359,34 @@ const getSetting = async (userId) => {
   return result;
 };
 
+const getUserById = async (userId) => {
+  let baseUrl = `http://localhost:3001/`;
+  let token = localStorage.getItem("token");
+  let response = {};
+  let result = [];
+  try {
+    let url = baseUrl + `user/id/${userId}`;
+    response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    result = await response.data.result[0];
+    // console.log(result);
+  } catch (error) {
+    console.log(error);
+    console.log(error.response.status);
+    if (error.response.status === 400) {
+      console.log(error.response.status);
+
+      response.status = 400;
+    } else if (error.response.status === 500) {
+      response.status = 500;
+    } else if (error.response.status === 401) {
+      response.status = 401;
+    }
+  }
+  return result;
+};
+
 export {
   getTotalTransactionForMonth,
   addTrasaction,
@@ -370,6 +400,7 @@ export {
   getRecentTransaction,
   userLogin,
   getSetting,
+  getUserById,
   getChartData,
   getAllChartData,
 };

@@ -57,8 +57,6 @@ export default function TransactionMeta({ transactionData }) {
 
   //console.log("user from meta:", user.name);
   const openCardMode = () => {
-    // setIsMore(true);
-    //console.log(user);
     history.push({
       pathname: "/transcard",
       state: { transactionData: transactionData },
@@ -93,6 +91,12 @@ export default function TransactionMeta({ transactionData }) {
           setError(false);
           setMessage("Transaction deleted succesfully");
           // console.log("resultArray:", resultArray);
+          setTimeout(() => {
+            history.push({
+              pathname: "/search",
+            });
+          }, 3000);
+
           return;
         }
       } catch (err) {
@@ -102,12 +106,6 @@ export default function TransactionMeta({ transactionData }) {
       }
     }
     deleteData();
-
-    // setIsEdit(true);
-    // history.push({
-    //   pathname: "/update_transaction",
-    //   state: { id: transactionData.id },
-    // });
   };
   return (
     <div className={classes.container}>

@@ -10,6 +10,7 @@ import imgAv from "../1.png";
 import {
   getRecentTransaction,
   getTotalTransactionForMonth,
+  getUserById,
 } from "../utilities/ApiService";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +51,7 @@ export default function Profile() {
   let userId = localStorage.getItem("userid");
   let [netTransactiondata, setNetTransactiondata] = useState([]);
   let [recentTransactionData, setRecentTransactionData] = useState([]);
+  let [userData, setUserData] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -58,6 +60,18 @@ export default function Profile() {
         setLoading(true);
         // Forget any past errors
         setError(false);
+        let userResult = await getUserById(userId);
+        if (
+          userResult &&
+          Object.keys(userResult).length === 0 &&
+          userResult.constructor === Object
+        ) {
+          // if result is empty
+          setError(true);
+          setLoading(false);
+        }
+        setUserData(userResult);
+
         let result = await getTotalTransactionForMonth(userId);
 
         console.log(" getTotalTransactionForMonth result: ", result);
@@ -112,27 +126,35 @@ export default function Profile() {
               <Paper className={classes.paper} elevation={3}>
                 <img className={classes.avatar} alt="Profile" src={imgAv} />
                 <div className={classes.info}>
-                  <div>Email:Vishal Mane</div>
-                  <div>Account created on :7/10/2021</div>
-                  <div>Name:Vishal Mane</div>
-                  <div>Currency:RS</div>
-                  <div>Theme:Default</div>
-                  <div className={classes.button}>
-                    <Button
-                      className={classes.button}
-                      variant="outlined"
-                      color="primary"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      className={classes.button}
-                      variant="outlined"
-                      color="secondary"
-                    >
-                      Delete
-                    </Button>
-                  </div>
+                  {userData.length < 1 ? (
+                    <>
+                      <div>Failed to fetch user data</div>
+                    </>
+                  ) : (
+                    <>
+                      <div>Email:{userData.email}</div>
+                      <div>Account created on :{userData.date}</div>
+                      <div>Name:{userData.name} </div>
+                      <div>Currency:{userData.currency}</div>
+                      <div>Theme:{userData.theme}</div>
+                      <div className={classes.button}>
+                        <Button
+                          className={classes.button}
+                          variant="outlined"
+                          color="primary"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          className={classes.button}
+                          variant="outlined"
+                          color="secondary"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </Paper>
 

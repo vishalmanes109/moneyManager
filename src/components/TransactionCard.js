@@ -65,9 +65,9 @@ export default function TransactionCard(props) {
   let [error, setError] = useState(false);
   let [message, setMessage] = useState("");
   let [info, setInfo] = useState(false);
-  let transactionData = props.location.state.transactionData;
-
-  console.log("locatindhda ", props.location.state.transactionData);
+  let transactionData = props?.location?.state?.transactionData;
+  console.log("length", transactionData);
+  // console.log("locatindhda ", props.location.state.transactionData);
   const edit = () => {
     // setIsEdit(true);
     console.log(transactionData.id);
@@ -82,6 +82,9 @@ export default function TransactionCard(props) {
       try {
         let result = await deleteTransaction(transactionData.id);
         console.log("result :,", result);
+        result.status = 200;
+        result.data.success = 1;
+
         if (result && result.status === 401) {
           setError(true);
           setMessage("Unauthorized Request, Login Again");
@@ -90,7 +93,7 @@ export default function TransactionCard(props) {
           // console.log(" success 0 Result:", result);
           setError(false);
           setInfo(true);
-          setMessage("0 Transaction Found");
+          setMessage("Invalid Transaction, Deletion failed ");
           return;
         }
         if (result && result.status === 500) {
@@ -104,7 +107,11 @@ export default function TransactionCard(props) {
           setInfo(true);
           setError(false);
           setMessage("Transaction deleted succesfully");
-          // console.log("resultArray:", resultArray);
+          setTimeout(() => {
+            history.push({
+              pathname: "/search",
+            });
+          }, 3000);
           return;
         }
       } catch (err) {
@@ -114,89 +121,96 @@ export default function TransactionCard(props) {
       }
     }
     deleteData();
-
-    // setIsEdit(true);
-    // history.push({
-    //   pathname: "/update_transaction",
-    //   state: { id: transactionData.id },
-    // });
   };
   let cardData = (
     <>
-      <div className={classes.root}>
-        {isEdit ? (
-          <Redirect
-            id={transactionData.id}
-            to={{
-              pathname: "/update",
-              state: { transactionData: transactionData },
-            }}
-          ></Redirect>
-        ) : (
-          <>
-            <h3>Transaction Details</h3>
-            <br />
-            <div className={classes.card}>
-              <div className={classes.attribute}>
-                <span>Title:</span>
-                <span className={classes.data}>{transactionData.title}</span>
-              </div>
-              <br />
-              <div className={classes.attribute}>
-                <span>Description:</span>
-                <span className={classes.data}>
-                  {transactionData.description}
-                </span>
-              </div>
-              <br />
-              <div className={classes.attribute}>
-                <span>Amount:</span>
-                <span className={classes.data}>{transactionData.amount}</span>
-              </div>
-              <br />
-              <div className={classes.attribute}>
-                <span>Essential:</span>
-                <span className={classes.data}>
-                  {transactionData.essential}
-                </span>
-              </div>
-              <br />
-              <div className={classes.attribute}>
-                <span>Transaction Type:</span>
-                <span className={classes.data}>{transactionData.type}</span>
-              </div>
-              <br />
-              <div className={classes.attribute}>
-                <span>Category:</span>
-                <span className={classes.data}>{transactionData.name}</span>
-              </div>
-              <br />
-              <br />
-            </div>
-            <div className={classes.buttons}>
-              <Button
-                //
-                variant="outlined"
-                color="primary"
-                className={classes.button}
-                endIcon={<EditIcon></EditIcon>}
-                onClick={edit}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                className={classes.button}
-                onClick={deleteTransaData}
-                endIcon={<DeleteForeverIcon></DeleteForeverIcon>}
-              >
-                Delete
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
+      {!transactionData ? (
+        <>
+          <div>No Transaction Found </div>
+          <Redirect to="/search"></Redirect>
+        </>
+      ) : (
+        <>
+          <div className={classes.root}>
+            {isEdit ? (
+              <Redirect
+                id={transactionData.id}
+                to={{
+                  pathname: "/update",
+                  state: { transactionData: transactionData },
+                }}
+              ></Redirect>
+            ) : (
+              <>
+                <h3>Transaction Details</h3>
+                <br />
+                <div className={classes.card}>
+                  <div className={classes.attribute}>
+                    <span>Title:</span>
+                    <span className={classes.data}>
+                      {transactionData.title}
+                    </span>
+                  </div>
+                  <br />
+                  <div className={classes.attribute}>
+                    <span>Description:</span>
+                    <span className={classes.data}>
+                      {transactionData.description}
+                    </span>
+                  </div>
+                  <br />
+                  <div className={classes.attribute}>
+                    <span>Amount:</span>
+                    <span className={classes.data}>
+                      {transactionData.amount}
+                    </span>
+                  </div>
+                  <br />
+                  <div className={classes.attribute}>
+                    <span>Essential:</span>
+                    <span className={classes.data}>
+                      {transactionData.essential}
+                    </span>
+                  </div>
+                  <br />
+                  <div className={classes.attribute}>
+                    <span>Transaction Type:</span>
+                    <span className={classes.data}>{transactionData.type}</span>
+                  </div>
+                  <br />
+                  <div className={classes.attribute}>
+                    <span>Category:</span>
+                    <span className={classes.data}>{transactionData.name}</span>
+                  </div>
+                  <br />
+                  <br />
+                </div>
+                <div className={classes.buttons}>
+                  <Button
+                    //
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<EditIcon></EditIcon>}
+                    onClick={edit}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    className={classes.button}
+                    onClick={deleteTransaData}
+                    endIcon={<DeleteForeverIcon></DeleteForeverIcon>}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </>
   );
   return <MiniDrawer props={cardData}></MiniDrawer>;

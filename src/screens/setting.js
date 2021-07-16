@@ -49,7 +49,6 @@ export default function Setting() {
 
   let [settingData, setSettingData] = useState({
     email: "",
-    password: "",
     currency_id: "",
     theme: "",
   });
@@ -102,11 +101,6 @@ export default function Setting() {
     if (!settingData.email) {
       setError(true);
       setMessage("Please enter valid email");
-      return false;
-    }
-    if (!settingData.password) {
-      setError(true);
-      setMessage("Please enter valid password");
       return false;
     }
 
@@ -198,17 +192,6 @@ export default function Setting() {
                   label="Email"
                   value={settingData.email}
                   helperText="update email"
-                  variant="outlined"
-                  onChange={handleInput}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  value={settingData.password}
-                  helperText="update password"
                   variant="outlined"
                   onChange={handleInput}
                 />
