@@ -15,8 +15,11 @@ import { Redirect } from "react-router-dom";
 
 import { userLogin } from "../utilities/ApiService";
 import MiniDrawer from "../components/Drawer";
+import { createMuiTheme } from "@material-ui/core/styles";
+import blue from "@material-ui/core/colors/blue";
 
 import { isValidString, isValidPassword } from "../utilities/validator";
+import { teal } from "@material-ui/core/colors";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -29,6 +32,18 @@ function Copyright() {
     </Typography>
   );
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: teal,
+  },
+});
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   paper: {

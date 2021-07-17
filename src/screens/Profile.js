@@ -3,15 +3,56 @@ import MiniDrawer from "../components/Drawer";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Avatar, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { TransactionMeta, RecentMeta } from "../components/Cards";
-import { DashboardLoader, ProfileLoader } from "../components/LoadingComponent";
+import { ProfileLoader } from "../components/LoadingComponent";
+import blue from "@material-ui/core/colors/blue";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { amber, green, purple, teal } from "@material-ui/core/colors";
 import imgAv from "../1.png";
 import {
   getRecentTransaction,
   getTotalTransactionForMonth,
   getUserById,
 } from "../utilities/ApiService";
+
+const lightTheme = createMuiTheme({
+  palette: {
+    primary: blue,
+  },
+});
+const darkTheme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: teal,
+
+    type: "dark",
+  },
+});
+
+const purpleTheme = createMuiTheme({
+  palette: {
+    primary: purple,
+    secondary: amber,
+    type: "dark",
+  },
+});
+
+const sunnyTheme = createMuiTheme({
+  palette: {
+    primary: amber,
+    secondary: teal,
+    type: "dark",
+  },
+});
+
+const electicTheme = createMuiTheme({
+  palette: {
+    primary: teal,
+    secondary: green,
+    type: "light",
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
