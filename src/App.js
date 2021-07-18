@@ -1,6 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./screens/Register";
 import Login from "./screens/Login";
@@ -20,6 +19,7 @@ import blue from "@material-ui/core/colors/blue";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { amber, green, purple, red, teal } from "@material-ui/core/colors";
+import { getSetting } from "./utilities/ApiService";
 
 const lightTheme = createMuiTheme({
   palette: {
@@ -58,8 +58,37 @@ const electicTheme = createMuiTheme({
   },
 });
 function App() {
-  const [appliedTheme, setAppliedTheme] = useState(darkTheme);
+  let [appliedTheme, setAppliedTheme] = useState();
 
+  let localThemeString = localStorage.getItem("theme");
+
+  useEffect(() => {
+    async function fetchTheme() {
+      try {
+        let themeResult = await getSetting();
+        if (themeResult && themeResult.status !== 200) {
+          setAppliedTheme(darkTheme);
+          return;
+        }
+        if (themeResult && themeResult.status === 200) {
+          setAppliedTheme(themeResult.result.data);
+          return;
+        }
+        if (themeResult && themeResult.status !== 200) {
+          setAppliedTheme(darkTheme);
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+        setAppliedTheme(darkTheme);
+      }
+    }
+    if (!localThemeString) {
+      fetchTheme();
+    } else {
+      setAppliedTheme(localThemeString);
+    }
+  }, []);
   return (
     <ThemeProvider theme={appliedTheme}>
       <CssBaseline />
