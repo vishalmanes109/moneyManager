@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./screens/Register";
@@ -19,7 +19,7 @@ import Profile from "./screens/Profile";
 import blue from "@material-ui/core/colors/blue";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { amber, green, purple, teal } from "@material-ui/core/colors";
+import { amber, green, purple, red, teal } from "@material-ui/core/colors";
 
 const lightTheme = createMuiTheme({
   palette: {
@@ -28,9 +28,8 @@ const lightTheme = createMuiTheme({
 });
 const darkTheme = createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: teal,
-
+    primary: teal,
+    secondary: red,
     type: "dark",
   },
 });
@@ -58,10 +57,11 @@ const electicTheme = createMuiTheme({
     type: "light",
   },
 });
-
 function App() {
+  const [appliedTheme, setAppliedTheme] = useState(darkTheme);
+
   return (
-    <ThemeProvider theme={electicTheme}>
+    <ThemeProvider theme={appliedTheme}>
       <CssBaseline />
       <Router>
         <div className="App">

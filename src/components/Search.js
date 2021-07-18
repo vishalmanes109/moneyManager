@@ -18,47 +18,6 @@ import {
   getTransactionByAttribute,
   getTransactionByPeriod,
 } from "../utilities/ApiService";
-import blue from "@material-ui/core/colors/blue";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { amber, green, purple, teal } from "@material-ui/core/colors";
-
-const lightTheme = createMuiTheme({
-  palette: {
-    primary: blue,
-  },
-});
-const darkTheme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: teal,
-
-    type: "dark",
-  },
-});
-
-const purpleTheme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: amber,
-    type: "dark",
-  },
-});
-
-const sunnyTheme = createMuiTheme({
-  palette: {
-    primary: amber,
-    secondary: teal,
-    type: "dark",
-  },
-});
-
-const electicTheme = createMuiTheme({
-  palette: {
-    primary: teal,
-    secondary: green,
-    type: "light",
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {

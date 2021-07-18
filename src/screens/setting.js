@@ -13,48 +13,6 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { FormLoader } from "../components/LoadingComponent";
 
 import { getSetting } from "../utilities/ApiService";
-import blue from "@material-ui/core/colors/blue";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { amber, green, purple, teal } from "@material-ui/core/colors";
-
-const lightTheme = createMuiTheme({
-  palette: {
-    primary: blue,
-  },
-});
-const darkTheme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: teal,
-
-    type: "dark",
-  },
-});
-
-const purpleTheme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: amber,
-    type: "dark",
-  },
-});
-
-const sunnyTheme = createMuiTheme({
-  palette: {
-    primary: amber,
-    secondary: teal,
-    type: "dark",
-  },
-});
-
-const electicTheme = createMuiTheme({
-  palette: {
-    primary: teal,
-    secondary: green,
-    type: "light",
-  },
-});
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -90,7 +48,6 @@ export default function Setting() {
   const classes = useStyles();
 
   let [settingData, setSettingData] = useState({
-    email: "",
     currency_id: "",
     theme: "",
   });
@@ -140,12 +97,6 @@ export default function Setting() {
     setSettingData({ email: "", password: "", currency_id: "", theme: "" });
   };
   const validateData = () => {
-    if (!settingData.email) {
-      setError(true);
-      setMessage("Please enter valid email");
-      return false;
-    }
-
     if (!settingData.currency_id) {
       setError(true);
       setMessage("Please select valid Currency");
@@ -227,17 +178,6 @@ export default function Setting() {
             onSubmit={submit}
           >
             <Grid className={classes.form} container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  value={settingData.email}
-                  helperText="update email"
-                  variant="outlined"
-                  onChange={handleInput}
-                />
-              </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel>Currency</InputLabel>

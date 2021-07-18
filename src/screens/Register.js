@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: "black",
+    backgroundColor: theme.palette.secondary.light,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -249,7 +249,6 @@ export default function SignUp() {
                   autoFocus
                   onChange={HandleInput}
                   onBlur={isUsernameAvailable}
-                  onFocus={focus}
                   onFocus={focus}
                 />
               </Grid>

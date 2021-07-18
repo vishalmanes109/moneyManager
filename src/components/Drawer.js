@@ -86,20 +86,21 @@ const useStyles = makeStyles((theme) => ({
   },
   list: { maxWidth: "750px", margin: "0 auto" },
   card: { margin: "0 auto" },
+  menubar: { textDecoration: "none", color: theme.palette.secondary.light },
 }));
 
 export default function MiniDrawer({ props }) {
-  useEffect(() => {
-    async function fetchData() {
-      try {
-      } catch (err) {
-        // console.error(err);
-        // setError(error);
-      }
-      // setLoading(false);
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //     } catch (err) {
+  //       // console.error(err);
+  //       // setError(error);
+  //     }
+  //     // setLoading(false);
+  //   }
+  //   fetchData();
+  // }, []);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -165,48 +166,48 @@ export default function MiniDrawer({ props }) {
           </div>
           <Divider />
           <List>
-            <Link style={{ textDecoration: "none" }} to="profile">
-              <ListItem button key={"Profile"}>
+            <Link className={classes.menubar} to="profile">
+              <ListItem button>
                 <ListItemIcon>
                   <AccountBoxIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Profile"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="dashboard">
-              <ListItem button key={"DashBoard"}>
+            <Link className={classes.menubar} to="dashboard">
+              <ListItem button>
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary={"DashBoard"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="stats">
-              <ListItem button key={"Stats"}>
+            <Link className={classes.menubar} to="stats">
+              <ListItem button>
                 <ListItemIcon>
                   <PollIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Stats"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="add_transaction">
-              <ListItem button key={"Add Transaction"}>
+            <Link className={classes.menubar} to="add_transaction">
+              <ListItem button>
                 <ListItemIcon>
                   <PostAddIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Add Transaction"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="search">
-              <ListItem button key={"Search Transactions"}>
+            <Link className={classes.menubar} to="search">
+              <ListItem button>
                 <ListItemIcon>
                   <FindInPageIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Search Transactions"} />
               </ListItem>
             </Link>
-            <Link style={{ textDecoration: "none" }} to="setting">
-              <ListItem button key={"Setting"}>
+            <Link className={classes.menubar} to="setting">
+              <ListItem button>
                 <ListItemIcon>
                   <SettingsApplicationsIcon />
                 </ListItemIcon>
