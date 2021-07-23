@@ -9,19 +9,13 @@ const getTotalTransactionForMonth = async (userId) => {
   let response = {};
   try {
     let url = baseUrl + "transaction/total/" + userId;
-    // console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
     netTransactionData = response.data.result;
-    console.log(netTransactionData);
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -39,19 +33,13 @@ const getRecentTransaction = async (userId) => {
   let response = {};
   try {
     let url = baseUrl + "transaction/recent/" + userId;
-    // console.log(url);
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
     recentTransactionData = response.data.result;
-    console.log("recentTransactionData api", recentTransactionData);
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -67,16 +55,12 @@ const addTrasaction = async (transactionData) => {
   let response;
   try {
     let url = baseUrl + "transaction";
-    // console.log(url);
+    //
     response = await axios.post(url, transactionData, {
       headers: { Authorization: `Bearer ${token}` },
     });
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -94,16 +78,12 @@ const deleteTransaction = async (transactionId) => {
   try {
     let url =
       baseUrl + `transaction?transaction_id=${transactionId}&user_id=${userId}`;
-    // console.log(url);
+    //
     response = await axios.delete(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -121,17 +101,12 @@ const updateTransaction = async (transactionData, attribute) => {
     let url = baseUrl + "transaction";
     let updateData = transactionData;
     updateData.attribute = attribute;
-    console.log(updateData);
+
     response = await axios.patch(url, updateData, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("response:", response);
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -143,7 +118,6 @@ const updateTransaction = async (transactionData, attribute) => {
 };
 
 const getTransactionByAttribute = async (attribute, value) => {
-  console.log(attribute, value);
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let userId = localStorage.getItem("userid");
@@ -153,16 +127,12 @@ const getTransactionByAttribute = async (attribute, value) => {
     url =
       baseUrl +
       `transaction?id=${userId}&attribute=${attribute}&value=${value}`;
-    // console.log(url);
+    //
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response);
   } catch (error) {
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -175,7 +145,6 @@ const getTransactionByAttribute = async (attribute, value) => {
   return response;
 };
 const getTransactionByPeriod = async (start, end) => {
-  console.log(start, end);
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");
   let userId = localStorage.getItem("userid");
@@ -183,16 +152,12 @@ const getTransactionByPeriod = async (start, end) => {
   let url;
   try {
     url = baseUrl + `transaction/period?id=${userId}&start=${start}&end=${end}`;
-    console.log(url);
+
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(response);
   } catch (error) {
-    console.log(error);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -214,13 +179,9 @@ const getTransactionById = async (transactionId) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     result = await response.data.result[0];
-    // console.log(result);
+    //
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -241,18 +202,14 @@ const getChartData = async (userId, chart, filter) => {
   try {
     let url =
       baseUrl + `stats/chart?user_id=${userId}&chart=${chart}&filter=${filter}`;
-    // console.log(url);
+    //
     response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
     chartData = response.data.result;
-    // console.log(chartData);
+    //
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -269,31 +226,25 @@ const getAllChartData = async (userId) => {
   let bar = await getChartData(userId, "bar", "expense");
   let line = await getChartData(userId, "line", "expense");
   let allChartData = { pie, bar, line };
-  console.log(allChartData);
+
   return allChartData;
 };
 //---------------------------------- User Services ----------------------------------
 const userRegistration = async (userData) => {
-  // console.log(userData);
+  //
   let baseUrl = `http://localhost:3001/`;
   // by default add currency as indian (5 is mapped to RS) theme to light user can change this from profile
   userData = { ...userData, avatar: "avatar", currency_id: 5, theme: "light" };
-  // console.log(userData);
+  //
   let response = {};
   let registrationResult = {};
   try {
     let url = baseUrl + "user";
     response = await axios.post(url, userData);
-    console.log("response:", response);
+
     registrationResult = response;
-
-    console.log("registrationResult:", registrationResult.status);
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;
@@ -305,35 +256,31 @@ const userRegistration = async (userData) => {
 };
 
 const userLogin = async (userData) => {
-  // console.log(userData);
+  //
   let baseUrl = `http://localhost:3001/`;
-  // console.log(userData);
+  //
   let loginResult = {};
   try {
     let url = baseUrl + "user/login";
     const response = await axios.post(url, userData);
-    console.log("response:", response);
+
     loginResult = response;
-
-    console.log("registrationResult:", loginResult.data.token);
   } catch (error) {
-    console.log("error logging:", error);
-
-    if (error === "Error: Network Error") console.log("net err conta");
+    if (error === "Error: Network Error") {
+      console.log(error);
+    }
   }
   return loginResult;
 };
 
 const isUserNameAvailable = async (userName) => {
-  console.log(userName);
   let baseUrl = `http://localhost:3001/`;
   let result = {};
   try {
     let url = baseUrl + `user/username/${userName}`;
     const response = await axios.get(url);
-    console.log("response:", response);
+
     result = response.data;
-    console.log("registrationResult:", result);
   } catch (error) {
     console.error("error:", error);
   }
@@ -350,9 +297,8 @@ const getSetting = async (userId) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     result = await response.data.result[0];
-    // console.log(result);
+    //
   } catch (error) {
-    console.log(error);
     result.error = true;
     return result;
   }
@@ -370,13 +316,9 @@ const getUserById = async (userId) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     result = await response.data.result[0];
-    // console.log(result);
+    //
   } catch (error) {
-    console.log(error);
-    console.log(error.response.status);
     if (error.response.status === 400) {
-      console.log(error.response.status);
-
       response.status = 400;
     } else if (error.response.status === 500) {
       response.status = 500;

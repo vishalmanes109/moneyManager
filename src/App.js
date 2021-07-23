@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./screens/Register";
 import Login from "./screens/Login";
 import MiniDrawer from "./components/Drawer";
-// import NotFound from "./components/404";
 import NotFound from "./screens/NotFound";
 import Dashboard from "./screens/Dashboard";
 import Stats from "./screens/Stats";
@@ -18,7 +17,7 @@ import Profile from "./screens/Profile";
 import blue from "@material-ui/core/colors/blue";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { amber, green, purple, red, teal } from "@material-ui/core/colors";
+import { amber, green, orange, red, teal } from "@material-ui/core/colors";
 import { getSetting } from "./utilities/ApiService";
 
 const lightTheme = createMuiTheme({
@@ -34,19 +33,11 @@ const darkTheme = createMuiTheme({
   },
 });
 
-const purpleTheme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: amber,
-    type: "dark",
-  },
-});
-
 const sunnyTheme = createMuiTheme({
   palette: {
-    primary: amber,
-    secondary: teal,
-    type: "dark",
+    primary: orange,
+    secondary: amber,
+    type: "light",
   },
 });
 
@@ -79,14 +70,23 @@ function App() {
           return;
         }
       } catch (err) {
-        console.log(err);
         setAppliedTheme(darkTheme);
       }
     }
     if (!localThemeString) {
       fetchTheme();
     } else {
-      setAppliedTheme(localThemeString);
+      if (localThemeString === "dark") {
+        setAppliedTheme(darkTheme);
+      } else if (localThemeString === "light") {
+        setAppliedTheme(lightTheme);
+      } else if (localThemeString === "elctric") {
+        setAppliedTheme(electicTheme);
+      } else if (localThemeString === "sunny") {
+        setAppliedTheme(sunnyTheme);
+      } else {
+        setAppliedTheme(darkTheme);
+      }
     }
   }, []);
   return (

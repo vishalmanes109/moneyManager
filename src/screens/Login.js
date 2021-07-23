@@ -65,14 +65,14 @@ export default function Login() {
   useEffect(() => {
     // if user is already logged in then redirect it to the dashboard
     let alreadyLogIn = localStorage.getItem("isLoggedIn");
-    console.log(alreadyLogIn);
+
     if (alreadyLogIn) {
       setRedirect(true);
     }
   }, []);
 
   const validatePassword = () => {
-    // console.log("lol", loginData.password);
+    //
     if (!isValidPassword(loginData.password)) {
       setError(true);
       setErrorMessage("Please Enter Valid Password");
@@ -82,7 +82,7 @@ export default function Login() {
     setError(false);
   };
   const validateUserName = () => {
-    // console.log("lol", loginData.password);
+    //
     if (!isValidString(loginData.name)) {
       setError(true);
       setErrorMessage("Please Enter Username");
@@ -124,7 +124,7 @@ export default function Login() {
       setError(false);
       setErrorMessage("");
       let loginResult = await userLogin(loginData);
-      console.log("loginResult", loginResult);
+
       // if login result is an empty object . so it is due to network error / server error
       if (
         loginResult &&
@@ -142,7 +142,6 @@ export default function Login() {
       }
 
       if (loginResult & (loginResult.data.success === 1)) {
-        console.log("lol:", loginResult.data);
         setLoginData({
           name: "",
           password: "",
@@ -163,7 +162,6 @@ export default function Login() {
       setError(true);
       setErrorMessage("Username / Password is incorrect ");
     } catch (err) {
-      console.log(err);
       setError(true);
       setErrorMessage("error");
     }

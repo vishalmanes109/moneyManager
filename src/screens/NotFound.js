@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import MiniDrawer from "../components/Drawer";
 import Notfound from "../components/404";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import InputLabel from "@material-ui/core/InputLabel";
@@ -16,12 +15,9 @@ export default function NotFound() {
     setValue(e.target.value);
   };
   let search = () => {
-    console.log(value);
     if (value === "login") {
-      console.log(value);
-
       linkComponent = <h1>lol</h1>;
-      console.log(linkComponent);
+
       return;
     }
     if (value === "register") {

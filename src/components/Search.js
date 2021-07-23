@@ -148,14 +148,13 @@ export default function UserForm() {
     setMessage("");
     let isValide = true;
     e.preventDefault();
-    // console.log(searchData);
-    // console.log("selectedAttribute: ", selectedAttribute);
+    //
+    //
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
-    // console.log(isValide);
+    //
     if (isValide === false) {
-      console.log("invalide");
       return;
     }
     if (!selectedValue && selectedAttribute) {
@@ -166,7 +165,7 @@ export default function UserForm() {
     try {
       setError(false);
       setMessage("");
-      // console.log(searchData);
+      //
       // let result = 10;
       let result = {};
 
@@ -186,7 +185,7 @@ export default function UserForm() {
           selectedValue
         );
       }
-      console.log("result :,", result);
+
       if (result && result.status === 401) {
         setError(true);
         setMessage("Unauthorized Request, Login Again");
@@ -196,7 +195,7 @@ export default function UserForm() {
         }, 3000);
       }
       if (result && result.status === 400) {
-        // console.log(" success 0 Result:", result);
+        //
         setError(false);
         setInfo(true);
         setMessage("0 Transaction Found");
@@ -205,23 +204,22 @@ export default function UserForm() {
       }
       if (result && result.status === 500) {
         setError(true);
-        // console.log(" err Result:", result);
+        //
         setMessage("Server Error");
         setResultArray([]);
         return;
       }
       if (result && result.status === 200 && result.data.success === 1) {
-        // console.log(" success Result 1:", result);
+        //
         setResultArray(result.data.result);
         resetData();
         setInfo(true);
         setError(false);
         setMessage(result.data.result.length + " Transactions Found");
-        // console.log("resultArray:", resultArray);
+        //
         return;
       }
     } catch (err) {
-      console.log(err);
       setError(true);
       setMessage("Server Error! Please try again");
       setResultArray([]);

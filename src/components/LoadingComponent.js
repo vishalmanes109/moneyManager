@@ -3,7 +3,6 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
 import { TransactionMeta } from "../components/Cards";
 
@@ -135,7 +134,7 @@ let StatsLoader = () => {
   );
 };
 let FormLoader = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <div

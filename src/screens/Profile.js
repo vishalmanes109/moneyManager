@@ -74,7 +74,6 @@ export default function Profile() {
 
         let result = await getTotalTransactionForMonth(userId);
 
-        console.log(" getTotalTransactionForMonth result: ", result);
         // if server error then result is empty object
         if (
           result &&
@@ -99,9 +98,7 @@ export default function Profile() {
           setLoading(false);
         }
         setRecentTransactionData(recentDataResult);
-        console.log("after set: ", recentDataResult);
       } catch (err) {
-        console.log("err: lol", err);
         setError(true);
         setLoading(false);
       }
@@ -111,7 +108,6 @@ export default function Profile() {
   }, []);
   const showTransaction = (id) => {
     // redirect to the show transaction page
-    console.log("transId", id);
   };
 
   let ProfileComponent = (

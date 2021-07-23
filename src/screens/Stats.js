@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MiniDrawer from "../components/Drawer";
-// import { PieChart } from "./Charts";
-
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { PieChart, BarChart, LineChart } from "../components/Charts";
 
@@ -10,24 +7,20 @@ import { getAllChartData } from "../utilities/ApiService";
 
 import { StatsLoader } from "../components/LoadingComponent";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  list: { maxWidth: "750px", margin: "0 auto" },
-  card: { margin: "0 auto" },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//   },
+//   content: {
+//     flexGrow: 1,
+//     padding: theme.spacing(3),
+//   },
+//   list: { maxWidth: "750px", margin: "0 auto" },
+//   card: { margin: "0 auto" },
+// }));
 
 const Dashboard = () => {
-  const classes = useStyles();
-  const theme = useTheme();
   let userId = 1;
-  //   let [netTransactiondata, setNetTransactiondata] = useState([]);
-  //   let [recentTransactionData, setRecentTransactionData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -41,12 +34,11 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchChartData() {
       try {
-        console.log("before set: ");
         setLoading(true);
         setError(false);
         let result = await getAllChartData(userId);
         setChartData(result);
-        console.log("after set: ", result);
+
         if (
           (result.pie &&
             Object.keys(result.pie).length === 0 &&
@@ -58,7 +50,6 @@ const Dashboard = () => {
             Object.keys(result.line).length === 0 &&
             result.line.constructor === Object)
         ) {
-          console.log("in if:", result);
           setError(true);
           setLoading(false);
         }

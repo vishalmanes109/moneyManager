@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -76,16 +75,15 @@ export default function Setting() {
       setLoading(true);
       setError(false);
       setMessage(false);
-      console.log("lol");
+
       try {
         let userid = localStorage.getItem("userid");
         result = await getSetting(userid);
         setSettingData(result);
-        console.log("after set: ", result);
+
         setError(false);
         setLoading(false);
       } catch (error) {
-        console.log("err: ", error);
         setError(true);
         setMessage("Server Error, Please Try Again!");
         setLoading(false);
@@ -113,20 +111,18 @@ export default function Setting() {
   const submit = async (e) => {
     let isValide = true;
     e.preventDefault();
-    console.log(settingData);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
-    // console.log(isValide);
+    //
     if (isValide === false) return;
     try {
       setSuccess(true);
 
       setError(false);
       setMessage("");
-      // let result = await addUser(userData);
       let result;
-      // console.log("result login", result);
 
       if (result && result.success !== 1) {
         setError(true);
@@ -135,7 +131,6 @@ export default function Setting() {
       }
 
       if (result && result.success === 1) {
-        // console.log("lol:", result.data);
         resetData();
         setError(false);
         setSuccess(true);
@@ -215,7 +210,6 @@ export default function Setting() {
               type="submit"
               variant="outlined"
               color="primary"
-              // className={classes.submit}
             >
               Update
             </Button>

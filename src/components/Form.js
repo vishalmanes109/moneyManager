@@ -56,17 +56,17 @@ export default function Form({ name, transid }) {
     currency_id: "",
     transaction_type_id: "",
   });
-  let [oldData, setOldData] = useState({
-    title: "",
-    description: "",
-    amount: "",
-    date: "",
-    mode_of_payment: "",
-    essential: "",
-    category_id: "",
-    currency_id: "",
-    transaction_type_id: "",
-  });
+  // let [oldData, setOldData] = useState({
+  //   title: "",
+  //   description: "",
+  //   amount: "",
+  //   date: "",
+  //   mode_of_payment: "",
+  //   essential: "",
+  //   category_id: "",
+  //   currency_id: "",
+  //   transaction_type_id: "",
+  // });
   let [error, setError] = useState(false);
   let [success, setSuccess] = useState(false);
   let [message, setMessage] = useState("");
@@ -89,7 +89,7 @@ export default function Form({ name, transid }) {
 
     async function fetchData() {
       let result;
-      console.log(name);
+
       setLoading(true);
       setError(false);
       try {
@@ -100,21 +100,19 @@ export default function Form({ name, transid }) {
 
         result.date = yyyy + "-" + mm + "-" + dd;
         // store fetch data into old data
-        setOldData(result);
+        // setOldData(result);
         // set trans data to fetch old data so that it can be displayed on screen
         setTransactionData(result);
-        console.log("after set: ", result);
+
         setError(false);
         setLoading(false);
       } catch (error) {
-        console.log("err: ", error);
         setError(true);
         setMessage("Server Error, Please Try Again!");
         setLoading(false);
       }
     }
     if (name === "Update") {
-      console.log(name);
       fetchData();
     }
   }, []);
@@ -188,11 +186,11 @@ export default function Form({ name, transid }) {
   const submit = async (e) => {
     let isValide = true;
     e.preventDefault();
-    console.log(transactionData);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
-    // console.log(isValide);
+    //
     if (isValide === false) return;
     try {
       setSuccess(false);
@@ -200,7 +198,6 @@ export default function Form({ name, transid }) {
       setMessage("");
       transactionData.user_id = localStorage.getItem("userid");
       let result = await addTrasaction(transactionData);
-      console.log("Transaction Added Succesfully!", result);
 
       if (result && result.status === 200 && result.data.success === 1) {
         setError(false);
@@ -210,7 +207,6 @@ export default function Form({ name, transid }) {
         return;
       }
       if (result && result.status === 400 && result.data.success !== 1) {
-        console.log("lol:", result.data);
         resetData();
         setError(true);
         setSuccess(false);
@@ -218,7 +214,6 @@ export default function Form({ name, transid }) {
         return;
       }
       if (result && result.status === 500 && result.data.success !== 1) {
-        console.log("lol:", result.data);
         resetData();
         setError(true);
         setSuccess(false);
@@ -239,7 +234,7 @@ export default function Form({ name, transid }) {
   const update = async (e) => {
     let isValide = true;
     e.preventDefault();
-    console.log(transactionData);
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     isValide = validateData();
@@ -247,9 +242,6 @@ export default function Form({ name, transid }) {
     if (isValide === false) return;
 
     try {
-      console.log("oldData:", oldData);
-
-      console.log("newData:", transactionData);
       setSuccess(false);
       setError(false);
       setLoading(true);
@@ -258,7 +250,7 @@ export default function Form({ name, transid }) {
       transactionData.attribute = attribute;
       let result = await updateTransaction(transactionData, attribute);
       // let result = {};
-      console.log("result in com", result);
+
       if (result && result.status === 200 && result.data.success === 1) {
         setLoading(false);
         setError(false);
@@ -268,7 +260,6 @@ export default function Form({ name, transid }) {
         return;
       }
       if (result && result.status === 400 && result.data.success !== 1) {
-        console.log("lol:", result.data);
         resetData();
         setLoading(false);
 
@@ -278,7 +269,6 @@ export default function Form({ name, transid }) {
         return;
       }
       if (result && result.status === 500 && result.data.success !== 1) {
-        console.log("lol:", result.data);
         resetData();
         setLoading(false);
 
@@ -291,8 +281,6 @@ export default function Form({ name, transid }) {
       setError(true);
       setMessage("Error! please try again");
       setLoading(false);
-
-      console.log("errjhjkjh", err);
     }
   };
 

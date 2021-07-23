@@ -86,8 +86,6 @@ export default function SignUp() {
     }
   };
   const validateEmail = () => {
-    console.log("lol", registerData.email);
-
     if (!isValidEmail(registerData.email)) {
       setError(true);
       setErrorMessage("Please Enter Valid Email Id");
@@ -98,7 +96,6 @@ export default function SignUp() {
   };
 
   const validatePassword = () => {
-    console.log("lol", registerData.password);
     if (!isValidPassword(registerData.password)) {
       setError(true);
       setErrorMessage("Please Enter Valid Password");
@@ -176,7 +173,6 @@ export default function SignUp() {
         return;
       }
       if (registrationResult && registrationResult.data.success === 1) {
-        console.log("lol:", registrationResult.data);
         setRegisterData({
           name: "",
           password: "",
@@ -197,7 +193,6 @@ export default function SignUp() {
       // setError(true);
       // setErrorMessage("Registration Failed! Try Again");
     } catch (err) {
-      console.log(err);
       setError(true);
       setErrorMessage("error");
     }

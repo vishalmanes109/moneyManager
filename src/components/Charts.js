@@ -17,31 +17,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const data = {
-  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-  datasets: [
-    {
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 206, 86, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgba(153, 102, 255, 0.2)",
-        "rgba(255, 159, 64, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+// const data = {
+//   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+//   datasets: [
+//     {
+//       data: [12, 19, 3, 5, 2, 3],
+//       backgroundColor: [
+//         "rgba(255, 99, 132, 0.2)",
+//         "rgba(54, 162, 235, 0.2)",
+//         "rgba(255, 206, 86, 0.2)",
+//         "rgba(75, 192, 192, 0.2)",
+//         "rgba(153, 102, 255, 0.2)",
+//         "rgba(255, 159, 64, 0.2)",
+//       ],
+//       borderColor: [
+//         "rgba(255, 99, 132, 1)",
+//         "rgba(54, 162, 235, 1)",
+//         "rgba(255, 206, 86, 1)",
+//         "rgba(75, 192, 192, 1)",
+//         "rgba(153, 102, 255, 1)",
+//         "rgba(255, 159, 64, 1)",
+//       ],
+//       borderWidth: 1,
+//     },
+//   ],
+// };
 const options = {
   scales: {
     yAxes: [
@@ -65,14 +65,13 @@ let PieChart = ({ data }) => {
   const classes = useStyles();
   let labels = [];
   let amount = [];
-  console.log("datar", data);
+
   if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
     data.forEach((ele) => {
       labels.push(ele.type);
       amount.push(ele.total);
     });
-  console.log("labels : ", labels);
-  console.log("amount : ", amount);
+
   let pieData = {
     labels,
     datasets: [
@@ -111,14 +110,13 @@ let BarChart = ({ data }) => {
   const classes = useStyles();
   let labels = [];
   let amount = [];
-  console.log("datar", data);
+
   if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
     data.forEach((ele) => {
       labels.push(ele.month);
       amount.push(ele.monthly_sum);
     });
-  console.log("labels : ", labels);
-  console.log("amount : ", amount);
+
   let barData = {
     labels,
     datasets: [
@@ -152,7 +150,7 @@ let BarChart = ({ data }) => {
 };
 
 let HeatMap = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return <div>Heatmap</div>;
 };
@@ -160,14 +158,13 @@ let LineChart = ({ data }) => {
   const classes = useStyles();
   let labels = [];
   let amount = [];
-  console.log("data", data);
+
   if (!data && Object.keys(data).length !== 0 && data.constructor !== Object)
     data.forEach((ele) => {
       labels.push(ele.date_trunc);
       amount.push(ele.sum);
     });
-  console.log("labels : ", labels);
-  console.log("amount : ", amount);
+
   let lineData = {
     labels,
     datasets: [

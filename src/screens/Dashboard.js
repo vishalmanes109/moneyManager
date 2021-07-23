@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MiniDrawer from "../components/Drawer";
-// import { PieChart } from "./Charts";
 
 import { TransactionMeta, RecentMeta } from "../components/Cards";
 import { Grid } from "@material-ui/core";
@@ -26,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const theme = useTheme();
   let userId = localStorage.getItem("userid");
   let [netTransactiondata, setNetTransactiondata] = useState([]);
   let [recentTransactionData, setRecentTransactionData] = useState([]);
@@ -40,7 +38,6 @@ const Dashboard = () => {
         setError(false);
         let result = await getTotalTransactionForMonth(userId);
 
-        console.log(" getTotalTransactionForMonth result: ", result);
         // if server error then result is empty object
         if (
           result &&
@@ -66,9 +63,7 @@ const Dashboard = () => {
           setLoading(false);
         }
         setRecentTransactionData(recentDataResult);
-        console.log("after set: ", recentDataResult);
       } catch (err) {
-        console.log("err: lol", err);
         setError(true);
         setLoading(false);
       }
@@ -78,7 +73,6 @@ const Dashboard = () => {
   }, []);
   const showTransaction = (id) => {
     // redirect to the show transaction page
-    console.log("transId", id);
   };
 
   let DashboardContent = (

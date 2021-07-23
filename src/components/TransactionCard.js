@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 import { Redirect, useHistory } from "react-router-dom";
 import MiniDrawer from "../components/Drawer";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-// import "./UserCard.css";
 import { deleteTransaction } from "../utilities/ApiService";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,15 +18,12 @@ const useStyles = makeStyles((theme) => ({
       "0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12)",
   },
   card: {
-    // margin: "1%",
-    // padding: "1%",
     width: "90%",
     alignItems: "left",
   },
 
   header: {
     width: "100%",
-    // border: "2px solid red",
     maxWidth: "700px",
     fontSize: "20em",
     fontWeight: "900",
@@ -60,17 +55,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TransactionCard(props) {
   const classes = useStyles();
-  let [isEdit, setIsEdit] = useState(false);
   let history = useHistory();
   let [error, setError] = useState(false);
   let [message, setMessage] = useState("");
   let [info, setInfo] = useState(false);
   let transactionData = props?.location?.state?.transactionData;
-  console.log("length", transactionData);
-  // console.log("locatindhda ", props.location.state.transactionData);
+
+  //
   const edit = () => {
-    // setIsEdit(true);
-    console.log(transactionData.id);
     history.push({
       pathname: "/update_transaction",
       state: { id: transactionData.id },
@@ -78,10 +70,9 @@ export default function TransactionCard(props) {
   };
   const deleteTransaData = () => {
     async function deleteData() {
-      console.log(transactionData.id);
       try {
         let result = await deleteTransaction(transactionData.id);
-        console.log("result :,", result);
+
         result.status = 200;
         result.data.success = 1;
 
@@ -90,7 +81,7 @@ export default function TransactionCard(props) {
           setMessage("Unauthorized Request, Login Again");
         }
         if (result && result.status === 400) {
-          // console.log(" success 0 Result:", result);
+          //
           setError(false);
           setInfo(true);
           setMessage("Invalid Transaction, Deletion failed ");
@@ -98,12 +89,12 @@ export default function TransactionCard(props) {
         }
         if (result && result.status === 500) {
           setError(true);
-          // console.log(" err Result:", result);
+          //
           setMessage("Server Error");
           return;
         }
         if (result && result.status === 200 && result.data.success === 1) {
-          // console.log(" success Result 1:", result);
+          //
           setInfo(true);
           setError(false);
           setMessage("Transaction deleted succesfully");
@@ -115,7 +106,6 @@ export default function TransactionCard(props) {
           return;
         }
       } catch (err) {
-        console.log(err);
         setError(true);
         setMessage("Server Error! Please try again");
       }
@@ -132,14 +122,8 @@ export default function TransactionCard(props) {
       ) : (
         <>
           <div className={classes.root}>
-            {isEdit ? (
-              <Redirect
-                id={transactionData.id}
-                to={{
-                  pathname: "/update",
-                  state: { transactionData: transactionData },
-                }}
-              ></Redirect>
+            {error ? (
+              <div> {message}</div>
             ) : (
               <>
                 <h3>Transaction Details</h3>
