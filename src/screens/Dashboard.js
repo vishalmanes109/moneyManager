@@ -109,13 +109,7 @@ const Dashboard = () => {
                       showTransaction(transaction.id);
                     }}
                   >
-                    <RecentMeta
-                      title={transaction.title}
-                      amount={transaction.amount}
-                      type={transaction.transaction_type_id}
-                      description={transaction.description}
-                      symbol={transaction.symbol}
-                    ></RecentMeta>
+                    <RecentMeta transactionData={transaction}></RecentMeta>
                   </div>
                 ))}
               </div>

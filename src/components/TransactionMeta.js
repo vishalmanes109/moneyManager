@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "left",
-    backgroundColor: "white",
     width: "90%",
     margin: "0 auto",
     marginTop: theme.spacing(2),

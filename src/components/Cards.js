@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,6 +9,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   red: { backgroundColor: "#f05945", borderRadius: "16px" },
   green: { backgroundColor: "#98ddca", borderRadius: "16px" },
@@ -42,24 +43,52 @@ let TransactionMeta = ({ name, total }) => {
   );
 };
 
-let RecentMeta = ({ title, amount, type, description, symbol }) => {
+let RecentMeta = ({ transactionData }) => {
   const classes = useStyles();
-  if (type === 1) amount = " + " + amount + symbol;
-  if (type === 2) amount = " - " + amount + symbol;
-  if (type === 3) amount = " ~ " + amount + symbol;
+  let history = useHistory();
+  let [type, setType] = useState();
+  let open = () => {
+    console.log(transactionData);
+    history.push({
+      pathname: "/transcard",
+      state: { transactionData: transactionData },
+    });
+    console.log(transactionData.title);
+  };
+
+  useEffect(() => {
+    //  type = transactionData.transaction_type_id;
+    setType(transactionData.transaction_type_id);
+
+    if (transactionData.transaction_type_id === 1)
+      transactionData.amount =
+        " + " + transactionData.amount + transactionData.symbol;
+    else if (transactionData.transaction_type_id === 2)
+      transactionData.amount =
+        " - " + transactionData.amount + transactionData.symbol;
+    else if (transactionData.transaction_type_id === 3)
+      transactionData.amount =
+        " ~ " + transactionData.amount + transactionData.symbol;
+    else transactionData.amount = " ~ " + transactionData.amount + "*";
+  }, []);
 
   return (
     <ListItem
       className={
-        type === 1 ? classes.green : type === 2 ? classes.red : classes.blue
+        transactionData.transaction_type_id === 1
+          ? classes.green
+          : transactionData.transaction_type_id === 2
+          ? classes.red
+          : classes.blue
       }
       button
+      onClick={open}
     >
       <ListItemAvatar>
         <Avatar alt={`Avatar`} src={`/.jpg`} />
       </ListItemAvatar>
       <ListItemText
-        primary={title}
+        primary={transactionData.title}
         secondary={
           <React.Fragment>
             <Typography
@@ -68,13 +97,13 @@ let RecentMeta = ({ title, amount, type, description, symbol }) => {
               className={classes.inline}
               color="textPrimary"
             ></Typography>
-            {description}
+            {transactionData.description}
           </React.Fragment>
         }
       />{" "}
       <br></br>
       <ListItemSecondaryAction>
-        <ListItemText id="2" primary={amount} />
+        <ListItemText id="2" primary={transactionData.amount} />
       </ListItemSecondaryAction>
     </ListItem>
   );

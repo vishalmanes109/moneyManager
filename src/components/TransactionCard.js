@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2em",
   },
   data: {
-    color: "grey",
     margin: "20px",
   },
 
