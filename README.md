@@ -81,7 +81,7 @@ npm install
   
 
 ## Architecture
-<img align="center" src="img/basic_arc.png" alt="Basic Architecture" width="80%" height="80%">
+<img align="center" src="img/basic_arch.png" alt="Basic Architecture" width="80%" height="80%">
 <br>
 <br>
 <img align="center" src="img/UserService.png" alt="User Service Architecture" width="80%" height="80%">
