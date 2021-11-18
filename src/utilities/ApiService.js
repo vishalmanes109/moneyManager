@@ -1,7 +1,6 @@
 import axios from "axios";
 
 //--------------------------------------- Tracker  Services----------------------------
-
 const getTotalTransactionForMonth = async (userId) => {
   let netTransactionData = {};
   let baseUrl = `http://localhost:3002/`;
@@ -144,6 +143,7 @@ const getTransactionByAttribute = async (attribute, value) => {
   }
   return response;
 };
+
 const getTransactionByPeriod = async (start, end) => {
   let baseUrl = `http://localhost:3002/`;
   let token = localStorage.getItem("token");

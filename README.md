@@ -1,3 +1,105 @@
+
+<!-- TABLE OF CONTENTS -->
+## Table of Contents
+
+* [About the Project](#about-the-project)
+* [Built With](#built-with)
+* [Getting Started](#getting-started)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Architecture](#architecture)
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+### MoneyManager:
+* What is MoneyManager?
+MoneyManager is microservice based web app that helps to manage your finances by keeping track of expenses. 
+`vishalmanes109`, `MoneyManager`, `finance`
+
+### screnshots
+   
+<img align="center" src="mockups/homepage_laptop_cr.jpg" alt="desktop homepage" width="80%" height="80%">
+<br>
+<br>
+   
+<img align="center" src="mockups/tablet_cr.jpg" alt="tablet homeage" width="80%" height="80%">
+<br>
+<br>
+<img align="center" src="mockups/mobile.jpg" alt="sc4" width="80%" height="80%">
+<br>
+<br>
+<img align="center" src="mockups/post_tablet.jpg" alt="sc2" width="80%" height="80%">
+
+### Built With
+
+* [ React ]( https://reactjs.org/)
+* [ Material UI](https://mui.com/)
+* [NodeJs]( https://nodejs.org/en/)
+* [Express]( https://expressjs.com/)
+* [PostgreSQL]( https://www.postgresql.org/)
+* [MongoDB]( https://www.mongodb.com/)
+* [Redis]( https://redis.io/)
+* [Docker]( https://www.docker.com/)
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+* nodejs
+* PostgreSQL
+* express
+
+* npm
+```sh
+npm install npm@latest -g
+```
+* nodemon
+```sh
+npm install nodemon -g
+```
+
+### Installation
+
+1. Clone the repo
+```sh
+git clone https://github.com/vishalmanes109/BookExchanger.git
+
+```
+2. Install NPM packages
+```sh
+npm install
+```
+  
+
+## Architecture
+<img align="center" src="img/basic_arc.png" alt="Basic Architecture" width="80%" height="80%">
+<br>
+<br>
+<img align="center" src="img/UserService.png" alt="User Service Architecture" width="80%" height="80%">
+<br>    
+<br>
+   
+<img align="center" src="img/readOps.png" alt="Read Operations" width="80%" height="80%">
+<br>    
+<br>
+
+<img align="center" src="img/write_ops.png" alt="Write Operations" width="80%" height="80%">
+<br>    
+<br>
+
+<img align="center" src="img/DB_Schema.jpg" alt="Database Schema" width="80%" height="80%">
+<br>    
+<br>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
