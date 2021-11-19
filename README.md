@@ -12,6 +12,7 @@
 * [Installation](#installation)
 
 
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -137,17 +138,25 @@ npm install nodemon -g
 ### Installation
 
 1. Clone the repo
-```sh
-git clone https://github.com/vishalmanes109/BookExchanger.git
 
+Fontend
+```sh
+git clone https://github.com/vishalmanes109/moneyManager.git
 ```
+Backend
+```sh
+git clone https://github.com/vishalmanes109/moneyManager.git
+```
+
+ 
 2. Install NPM packages
 ```sh
 npm install
 ```
   
 
-# Getting Started with Create React App
+
+### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
