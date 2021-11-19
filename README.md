@@ -3,11 +3,13 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
+
+* [Architecture](#architecture)
+
 * [Built With](#built-with)
 * [Getting Started](#getting-started)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
-* [Architecture](#architecture)
 
 
 <!-- ABOUT THE PROJECT -->
@@ -31,6 +33,71 @@ MoneyManager is microservice based web app that helps to manage your finances by
 <br>
 <br>
 <img align="center" src="mockups/post_tablet.jpg" alt="sc2" width="80%" height="80%">
+
+
+## Architecture
+
+### Checkout https://github.com/vishalmanes109/financewala for Backend Code.
+
+
+### Overview:
+
+* Entire WebApp modularized into 3 micro-services.
+    1. userService: Handles user profile, authentication.
+    2. transactionService: Handles transactions.
+    3. statsService: Handles graphicle representation.
+
+* statsService depends on transactionService for it's data.
+
+* Eventbus service use for async operations.
+
+* If transactionService failed to send data to statsService then it sends to evenBus and eventBus asyncronously sends it to statsService.
+
+### READ and WRITE Operations:
+1. READ is possible for all 3 services.
+2. WRITE is allowed only for userService and transactionService. 
+3. statsSerivce and eventBus service does not provide endpoints for WRITE request to users.
+
+### Database:
+1. PostgreSQL is used by userService, transactionService and statsService. 
+2. MongoDB is used by only eventBus.
+3. stastService DB is populated from transactionService DB or from eventBud DB.
+  
+### Caching
+* In memory caching (Redis) is used. 
+* COmbination of  side aside and write back caching technique is used for caching.
+    
+
+
+#### Basic Architcture 
+<img align="center" src="img/basic_arch.png" alt="Basic Architecture" width="80%" height="80%">
+<br>
+<br>
+
+* Client sends request to the server. if it is read request then it is fetched from cache. the there is miss fault then request transers to the web server. web server querys PostgreSQL and sends response to the client and simultaniously updates the cache. 
+
+
+#### Database Schema
+
+<img align="center" src="img/DB_Schema.jpg" alt="Database Schema" width="80%" height="80%">
+<br>    
+<br>
+
+#### userService Architecture
+<img align="center" src="img/UserService.png" alt="User Service Architecture" width="80%" height="80%">
+<br>    
+<br>
+
+#### transactionService and statsService    
+* READ Operations    
+<img align="center" src="img/readOps.png" alt="Read Operations" width="80%" height="80%">
+<br>    
+<br>
+
+* Write Operations
+<img align="center" src="img/write_ops.png" alt="Write Operations" width="80%" height="80%">
+<br>    
+<br>
 
 ### Built With
 
@@ -79,26 +146,6 @@ git clone https://github.com/vishalmanes109/BookExchanger.git
 npm install
 ```
   
-
-## Architecture
-<img align="center" src="img/basic_arch.png" alt="Basic Architecture" width="80%" height="80%">
-<br>
-<br>
-<img align="center" src="img/UserService.png" alt="User Service Architecture" width="80%" height="80%">
-<br>    
-<br>
-   
-<img align="center" src="img/readOps.png" alt="Read Operations" width="80%" height="80%">
-<br>    
-<br>
-
-<img align="center" src="img/write_ops.png" alt="Write Operations" width="80%" height="80%">
-<br>    
-<br>
-
-<img align="center" src="img/DB_Schema.jpg" alt="Database Schema" width="80%" height="80%">
-<br>    
-<br>
 
 # Getting Started with Create React App
 
