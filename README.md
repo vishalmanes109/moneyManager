@@ -21,20 +21,6 @@
 MoneyManager is microservice based web app that helps to manage your finances by keeping track of expenses. 
 `vishalmanes109`, `MoneyManager`, `finance`
 
-### screnshots
-   
-<img align="center" src="mockups/homepage_laptop_cr.jpg" alt="desktop homepage" width="80%" height="80%">
-<br>
-<br>
-   
-<img align="center" src="mockups/tablet_cr.jpg" alt="tablet homeage" width="80%" height="80%">
-<br>
-<br>
-<img align="center" src="mockups/mobile.jpg" alt="sc4" width="80%" height="80%">
-<br>
-<br>
-<img align="center" src="mockups/post_tablet.jpg" alt="sc2" width="80%" height="80%">
-
 
 ## Architecture
 
